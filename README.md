@@ -30,3 +30,9 @@ in a head-on traffic accident on November 10, 2011.
 The file world.bas was extracted from [projectrho](http://www.projectrho.com/world.bas)
 some time ago. The website contained no description, not even a link to the source file.
 It does not seem to be present anymore.
+
+## Updated versions
+The orginal source code, as well as its variants, is reader old and specific for
+some computer and BASIC version. Therefore, both the orginal version from Stephen Kimmel
+as well as the Dutch version from the Kijk magazine are adapted to work with
+[QB64](https://github.com/Galleondragon/qb64).
