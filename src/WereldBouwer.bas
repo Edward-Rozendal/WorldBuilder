@@ -2,11 +2,12 @@
 10 FOR i=1 TO 700: COLOR (1): PSET (RND*640, RND*480): NEXT i
 15 FOR i=1 TO 100: COLOR (2): PSET (RND*640, RND*480): NEXT i
 20 FOR i=1 TO 100: COLOR (3): PSET (RND*640, RND*480): NEXT i
-25 print"^        ** WERELD BOUWER **"
-30 print"^        door Stephen Kimmel"
-35 print"^        een programma voor"
-40 print"^        de bouw van vreemde"
-45 print"^        nieuwe werelden...."
+25 LOCATE 8, 30: PRINT "** WERELD BOUWER **"
+30 LOCATE 10, 30: PRINT "door Stephen Kimmel"
+35 LOCATE 12, 30: PRINT "een programma voor"
+40 LOCATE 14, 30: PRINT "de bouw van vreemde"
+45 LOCATE 16, 30: PRINT "nieuwe werelden...."
+
 60 dimsc$(8),m(8),c$(8),s$(36),ls(36),ss$(36),sm(36),mp(15),r(15)
 70 fori=1to8:readsc$(i),m(i),c$(i):nexti
 80 fori=1to17:reads$(i),ss$(i),sm(i):ls(i)=sm(i)^3.5:nexti
