@@ -8,26 +8,27 @@
 40 LOCATE 14, 30: PRINT "de bouw van vreemde"
 45 LOCATE 16, 30: PRINT "nieuwe werelden...."
 
-60 dimsc$(8),m(8),c$(8),s$(36),ls(36),ss$(36),sm(36),mp(15),r(15)
-70 fori=1to8:readsc$(i),m(i),c$(i):nexti
-80 fori=1to17:reads$(i),ss$(i),sm(i):ls(i)=sm(i)^3.5:nexti
-90 fori=18to36:reads$(i),ss$(i),ls(i):sm(i)=ls(i)^.285714:nexti
-100 datao,100,blauw,b,17,licht blauw,a,3.2,wit,f,1.54,licht geel
-110 datag,1.02,geel,k,.75,oranje,m,.38,rood,d,0.,rood
-120 datasol,g2,1.0,alpha centauri a,g4,1.08,alpha centauri b,k1,.88
-130 dataepsilon eridani,k2,.80,tau ceti,g8,.82
-140 data70 ophiuchi a,k1,.9,70 ophiuchi b,k5,.65
-150 dataeta cassiopeiae a,f9,.94,eta cassiopeiae b,k6,.58
-160 datasigma draconis,g9,.82,36 ophiuchi a,k2,.77
-170 data36 ophiuchi b,k1,.76,hr-7703,k2,.76
-180 datadelta pavonis,g7,.98,82 eridani,g5,.91
-190 databeta hydri,g1,1.23,hr-8832,k3,.74
-200 datasirius,a1,23,canopus,f0,130,vega,a0,52,arcturus,k2,100
-210 datarigel,b8,52000,capella,g8,145,procyon,f5,7.6
-220 dataachernar,b5,1000,altair,a7,10,betelgeuze,m2,8300
-230 dataaldebaran,k5,160,spica,b1,760,antares,m1,830
-240 datapollux,k0,33,fomalhaut,a3,13,beta crucis,b0,8300
-250 datadeneb,a2,52000,regulus,b7,160,barnards star,m5,.00044
+60 DIM sc$(8), m(8), c$(8), s$(36), ls(36), ss$(36), sm(36), mp(15), r(15)
+70 FOR i=1 TO 8: READ sc$(i), m(i), c$(i): NEXT i
+80 FOR i=1 TO 17: READ s$(i), ss$(i), sm(i): ls(i)=sm(i)^3.5: NEXT i
+90 FOR i=18 TO 36: READ s$(i), ss$(i), ls(i): sm(i)=ls(i)^.285714: NEXT i
+100 DATA o,100,blauw,b,17,licht blauw,a,3.2,wit,f,1.54,licht geel
+110 DATA g,1.02,geel,k,.75,oranje,m,.38,rood,d,0.,rood
+120 DATA sol,g2,1.0,alpha centauri a,g4,1.08,alpha centauri b,k1,.88
+130 DATA epsilon eridani,k2,.80,tau ceti,g8,.82
+140 DATA 70 ophiuchi a,k1,.9,70 ophiuchi b,k5,.65
+150 DATA eta cassiopeiae a,f9,.94,eta cassiopeiae b,k6,.58
+160 DATA sigma draconis,g9,.82,36 ophiuchi a,k2,.77
+170 DATA 36 ophiuchi b,k1,.76,hr-7703,k2,.76
+180 DATA delta pavonis,g7,.98,82 eridani,g5,.91
+190 DATA beta hydri,g1,1.23,hr-8832,k3,.74
+200 DATA sirius,a1,23,canopus,f0,130,vega,a0,52,arcturus,k2,100
+210 DATA rigel,b8,52000,capella,g8,145,procyon,f5,7.6
+220 DATA achernar,b5,1000,altair,a7,10,betelgeuze,m2,8300
+230 DATA aldebaran,k5,160,spica,b1,760,antares,m1,830
+240 DATA pollux,k0,33,fomalhaut,a3,13,beta crucis,b0,8300
+250 DATA deneb,a2,52000,regulus,b7,160,barnards star,m5,.00044
+
 260 fori=1to50:a$="wait":nexti:print"S^        && WERELD BOUWER &&"
 270 print"^tik het nr. van de gewenste operatie"
 280 print"^1) gebruik een bekende ster"
