@@ -28,19 +28,20 @@
 230 DATA aldebaran,k5,160,spica,b1,760,antares,m1,830
 240 DATA pollux,k0,33,fomalhaut,a3,13,beta crucis,b0,8300
 250 DATA deneb,a2,52000,regulus,b7,160,barnards star,m5,.00044
+255 IF INKEY$ = "" THEN GOTO 255 ELSE SCREEN 0
 
-260 fori=1to50:a$="wait":nexti:print"S^        && WERELD BOUWER &&"
-270 print"^tik het nr. van de gewenste operatie"
-280 print"^1) gebruik een bekende ster"
-290 print"^2) gebruik een andere ster"
-300 print"^3) druk een lijst van bekende sterren"
-310 print"^4) stop"
-320 input"^uw keus";a
-330 ifa<1ora>4goto260
-340 onagoto410,550,370,350
-350 input"^weet u zeker dat u wilt stoppen";a$
-360 ifleft$(a$,1)="j"thenend
-365 goto260
+260 CLS: LOCATE 5, 30: PRINT "&& WERELD BOUWER &&"
+270 LOCATE 7, 10: PRINT "tik het nr. van de gewenste operatie"
+280 LOCATE 9, 10: PRINT "1) gebruik een bekende ster"
+290 LOCATE 11, 10: PRINT "2) gebruik een andere ster"
+300 LOCATE 13, 10: PRINT "3) druk een lijst van bekende sterren"
+310 LOCATE 15, 10: PRINT "4) stop"
+320 LOCATE 18, 10: INPUT "Uw keus ";a
+330 IF a<1 OR a>4 THEN GOTO 260
+340 ON a GOTO 410,550,370,350
+350 LOCATE 21, 10: INPUT "weet u zeker dat u wilt stoppen ";a$
+360 IF LEFT$(a$, 1)="j" OR LEFT$(a$, 1)="J" THEN END
+365 GOTO 260
 370 print"S^Dit zijn de sterren op mijn lijst:"
 380 fori=1to18:iflen(a$(i))<10thenprint" ";s$(i)+"         ",s$(i+18):goto400
 390 print" ";s$(i) ,s$(i+18)
