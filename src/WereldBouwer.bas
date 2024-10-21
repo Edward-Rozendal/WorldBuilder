@@ -42,24 +42,26 @@
 350 LOCATE 21, 10: INPUT "weet u zeker dat u wilt stoppen ";a$
 360 IF LEFT$(a$, 1)="j" OR LEFT$(a$, 1)="J" THEN END
 365 GOTO 260
-370 print"S^Dit zijn de sterren op mijn lijst:"
-380 fori=1to18:iflen(a$(i))<10thenprint" ";s$(i)+"         ",s$(i+18):goto400
-390 print" ";s$(i) ,s$(i+18)
-400 nexti
-410 input"^welke ster zal ik gebruiken";s$
-420 ifleft$(s$,1)="g"then260
-430 fori=1to36
-440 ifs$=s$(i)thensk=i:goto470
-450 nexti
-460 print"S^Die ster is mij niet bekend.":goto260
-470 sc=val(right$(ss$(sk),1))/10
-480 s1$=left$(ss$(sk),1)
-490 fori=1to7:ifs1$=sc$(i)thenj=i:goto510
-500 nexti
-510 ms=sm(sk):l=ls(sk):as=(ms^-2.5)*10
+370 CLS: LOCATE 1, 5: PRINT "Dit zijn de sterren op mijn lijstje:"
+380 FOR i=1 TO 18
+    390 LOCATE i+2, 5: PRINT s$(i): LOCATE i+2, 40: PRINT s$(i+18)
+400 NEXT i
+410 LOCATE 22, 5: INPUT "Welke ster zal ik gebruiken";s$
+420 IF LEFT$(s$, 1)="g" OR LEFT$(s$, 1)="G" THEN GOTO 260
+430 FOR i=1 TO 36
+    440 IF s$=s$(i) THEN sk=i: GOTO 470
+450 NEXT i
+460 LOCATE 24, 5: PRINT "Die ster is mij niet bekend.";
+465 IF INKEY$ = "" THEN GOTO 465 ELSE GOTO 260
+470 sc=VAL(RIGHT$(ss$(sk), 1))/10
+480 s1$=LEFT$(ss$(sk), 1)
+490 FOR i=1 TO 7: IF s1$=sc$(i) THEN j=i: GOTO 510
+500 NEXT i
+510 ms=sm(sk): l=ls(sk): as1=(ms^-2.5)*10
 520 p=(1.25-ms/(l^.285714))/.005
-530 ifp/100*as>10thenp=1000/as
-540 goto740
+530 IF p/100*as1>10 THEN p=1000/as1
+540 GOTO 740
+
 550 input"^Hoe heet de ster";s$
 560 input"^Wat is de spectraalklasse";s1$
 570 ifs1$<>"/"goto640
