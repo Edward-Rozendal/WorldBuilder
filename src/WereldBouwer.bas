@@ -1,7 +1,7 @@
-5 print"S": fori=1to40:poke33792+rnd(1)*60*i,42:nexti
-10 y=34038:forii=1to13
-15 fori=yto(y+23):pokei,32:nexti
-20 y=y+40:nextii
+5 SCREEN 12: CLS
+10 FOR i=1 TO 700: COLOR (1): PSET (RND*640, RND*480): NEXT i
+15 FOR i=1 TO 100: COLOR (2): PSET (RND*640, RND*480): NEXT i
+20 FOR i=1 TO 100: COLOR (3): PSET (RND*640, RND*480): NEXT i
 25 print"^        ** WERELD BOUWER **"
 30 print"^        door Stephen Kimmel"
 35 print"^        een programma voor"
