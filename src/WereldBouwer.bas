@@ -62,29 +62,31 @@
 530 IF p/100*as1>10 THEN p=1000/as1
 540 GOTO 740
 
-550 input"^Hoe heet de ster";s$
-560 input"^Wat is de spectraalklasse";s1$
-570 ifs1$<>"/"goto640
-580 input"Absolute magnitude (zon = 4.85)";m
-590 l=2.512^(4.85-m):ms=l^.285714
-600 fori=1to7:ifm(i)<msthenj=i-1:goto620
-610 nexti
-620 s1$=sc$(i-1):sc=int((ms-m(j))/(m(i)-m(j))*10)/10
-630 goto680
-640 sc=val(right$(s1$,1))/10:s1$=left$(s1$,1)
-650 fori=1to7:ifs1$=sc$(i)thenj=i:goto670
-660 nexti:print"^Die klasse is mij onbekend.":goto560
+550 CLS: LOCATE 3, 5: INPUT "Hoe heet de ster ";s$
+560 PRINT: PRINT TAB(5);: INPUT "Wat is de spectraalklasse ";s1$
+570 IF s1$ <> "/" AND s1$ <> "?" THEN GOTO 640
+580 PRINT: PRINT TAB(5);: INPUT "Absolute magnitude (zon = 4.85) ";m
+590 l=2.512^(4.85-m): ms=l^.285714
+600 FOR i=1 TO 7: IF m(i)<ms THEN j=i-1: GOTO 620
+610 NEXT i
+620 s1$=sc$(i-1): sc=INT((ms-m(j))/(m(i)-m(j))*10)/10
+630 GOTO 680
+640 sc=VAL(RIGHT$(s1$, 1))/10: s1$=LEFT$(s1$, 1)
+650 FOR i=1 TO 7: IF s1$=sc$(i) THEN j=i: GOTO 670
+660 NEXT i: PRINT: PRINT TAB(5);"Die klasse is mij onbekend.": GOTO 560
 670 ms=m(j)-sc*(m(j)-m(j+1))
-680 as=(ms^-2.5)*10
-685 z=as:gosub2650
-690 print"^";s$;" heeft een verwachte":print"^Levensduur van ";z;" miljard";
-695 print" jaar."
-700 input"^Welk percentage (1-100) is voorbij";p
-710 ifp/100*as<18then720
-715 print"^Het universum is circa 18 miljard jaar":print"^oud. ";
-717 input"Wilt u een ander percentage";a$:ifleft$(a$,1)sg"n"then690
+680 as1=(ms^-2.5)*10
+685 z=as1: GOSUB 2650
+690 PRINT: PRINT TAB(5);s$;" heeft een verwachte levensduur van "
+695 PRINT TAB(5);z;" miljard jaar."
+700 PRINT: PRINT TAB(5);: INPUT "Welk percentage (1-100) is voorbij ";p
+710 IF p/100*as1<18 THEN GOTO 720
+715 PRINT: PRINT TAB(5);"Het universum is circa 18 miljard jaar oud."
+717 PRINT: PRINT TAB(5);: INPUT "Wilt u een ander percentage ";a$
+718 IF LEFT$(a$, 1)<>"n" AND LEFT$(a$, 1)<>"N" THEN GOTO 690
 720 ms=ms*(1.25-.005*p)
 730 l=ms^3.5
+
 740 ts=6000*ms^.35
 750 ds=ms^.3333
 760 print"S^       ** STELLAR DATA **"
