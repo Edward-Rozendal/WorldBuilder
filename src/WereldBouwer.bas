@@ -89,33 +89,33 @@
 
 740 ts=6000*ms^.35
 750 ds=ms^.3333
-760 print"S^       ** STELLAR DATA **"
-770 print"^De gekozen ster, ";s$:print" is een ";s1$;sc*10;" ster."
-780 ifsc>.75thenprint" Ze is ";c$(j+1);" van kleur,":goto805
-790 ifsc<.25thenprint" Ze is ";c$(j);" van kleur,":goto805
-800 print" Ze heeft een kleur tussen":print" ";c$(j);" en ";c$(j+1);","
-805 z=ms:gosub2650
-810 print" en haar massa is ";z;" zonsmassa's."
-815 z=l:gosub2650
-820 print" Ze is ";z;" maal zo helder":print" als de zon."
-825 z=as:gosub2650
-830 print" Haar verwachte levensduur is ":printz;" miljard jaar,"
-835 z=p:gosub2650
-840 print" waarvan ";z;"%";" of ongeveer"
-845 printint(as*p+.5)/100;" miljard jaar zijn verstreken."
-850 ifp>95thenprint" ";s$;" ligt op haar sterfbed."
-855 z=ts: gosub2650
-860 print" Ze heeft een oppervlaktetemperatuur"
-865 print" van ";z;" graden Kelvin."
-870 ifj+sc>2.5andj+sc<7then880
-875 print" Ze heeft waarschijnlijk geen":print" planetenstelsel.":goto890
-880 print" Ze heeft mogelijk een planetenstelsel."
-890 print" ";s$;" zal sterven als een"
-900 ifms<1.5thenprint" witte dwerg.":goto940
-920 ifms<10thenprint" neutronster na een supernova-explosie.":goto940
-930 print" zwart gat na een supernova-explosie."
-940 input"^Wilt u een andere ster";a$
-950 ifleft$(a$,1)="j"then260
+760 CLS: LOCATE 2, 31: PRINT "** STELLAR DATA **": PRINT: PRINT
+770 PRINT TAB(10);"De gekozen ster, ";s$: PRINT TAB(10);"is een ";s1$;sc*10;" ster."
+780 IF sc>.75 THEN PRINT TAB(10);"Ze is ";c$(j+1);" van kleur,": GOTO 805
+790 IF sc<.25 THEN PRINT TAB(10);"Ze is ";c$(j);" van kleur,": GOTO 805
+800 PRINT TAB(10);"Ze heeft een kleur tussen ";c$(j);" en ";c$(j+1);","
+805 z=ms: GOSUB 2650
+810 PRINT TAB(10);"en haar massa is ";z;" zonsmassa's."
+815 z=l: GOSUB 2650
+820 PRINT TAB(10);"Ze is ";z;" maal zo helder als de zon."
+825 z=as1: GOSUB 2650
+830 PRINT TAB(10);"Haar verwachte levensduur is": PRINT TAB(10);z;" miljard jaar,"
+835 z=p: GOSUB 2650
+840 PRINT TAB(10);"waarvan ";z;"%";" of ongeveer "
+845 PRINT TAB(10);INT(as1*p+.5)/100;" miljard jaar zijn verstreken."
+850 IF p>95 THEN PRINT TAB(10);s$;" ligt op haar sterfbed."
+855 z=ts: GOSUB 2650
+860 PRINT TAB(10);"Ze heeft een oppervlaktetemperatuur": PRINT TAB(10);"van";z;"graden Kelvin."
+870 IF j+sc>2.5 AND j+sc<7 THEN GOTO 880
+875 PRINT TAB(10);"Ze heeft waarschijnlijk geen planetenstelsel.": GOTO 890
+880 PRINT TAB(10);"Ze heeft mogelijk een planetenstelsel."
+890 PRINT TAB(10);s$;" zal sterven als een"
+900 IF ms<1.5 THEN PRINT TAB(10);"witte dwerg.": GOTO 940
+920 IF ms<10 THEN PRINT TAB(10);"neutronster na een supernova-explosie.": GOTO 940
+930 PRINT TAB(10);"zwart gat na een supernova-explosie."
+940 PRINT: PRINT TAB(10);: INPUT "Wilt u een andere ster";a$
+950 IF LEFT$(a$, 1)="j" OR LEFT$(a$, 1) = "J" THEN GOTO 260
+
 955 Hm=0
 960 p=p/100
 970 print"S^      ** PLANEET-GEGEVENS **"
