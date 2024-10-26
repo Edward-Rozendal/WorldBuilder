@@ -203,50 +203,53 @@
     1550 IF f=0 THEN 1570
 1560 NEXT i
 
-1570 print"S^      ** HET MANENSTELSEL **"
-1580 print"^baanstraal  massa   periode"
-1585 fori=1tomn:z=mp(i)/da:gosub2650
-1590 printmr(i),"  ";mn(i),z;"dagen":nexti
-1600 input"^Wilt u een ander stelsel";a$
-1610 ifleft$(a$,l)="j"then1190
-1620 print"S^       ** PLANEET GEGEVENS **"
-1630 print"^Deze planeet heeft een gemiddelde"
-1635 z=tp-460:gosub2700
-1640 print" oppervlakte-temperatuur van ";z:print" graden C.";
-1645 print" Dit betekent een baanstraal"
-1647 z=rp:gosub2650
-1650 print" van ";z;" astronomische eenheden"
-1655 print" (";z*150;" miljoen km.)."
-1660 z=ca:gosub2650:print" Perihelium = ";z;"ae":print" Aphelium = ";
-1665 z=fa:gosub2650:printz;"ae."
-1670 z=pp:gosub2650:print" Een jaar is ";z;" aardejaren lang."
-1680 print" ";s$;" lijkt";
-1690 ifsa>1.5orsa<.75thenprint" veel";
-1700 ifsa>1thenprint" groter":goto1710
-1705 print" kleiner"
-1710 print" dan onze zon."
-1720 ifg<.95org>1.05then1730
-1725 print" De zwaartekracht is vrijwel gelijk":print" aan die van de aarde."
-1727 goto1800
-1730 print" Aangezien de zwaartekracht";:ifg<1then1760
-1740 print" groter is":print" dan op aarde verwachten we"
-1750 print" een dichtere atmosfeer. De tektonische"
-1752 print" werking is groter maar er is ook"
-1754 print" meer weerstand. We verwachten daarom"
-1756 print" meer continenten en kleinere bergen;"
-1758 print" Aardbevingen komen vaker voor en zijn":print" heviger.":goto1780
-1760 print" kleiner is":print" dan op aarde verwachten we"
-1770 print" een dunnere atmosfeer. Er is minder"
-1772 print" tektonische werking en ook de"
-1774 print" weerstand is kleiner. We verwachten"
-1776 print" daarom minder bergen, maar ze kunnen":print" veel hoger worden."
-1778 print" Aardbevingen, als ze al voorkomen,"
-1779 print" zullen minder hevig zijn."
-1780 print" Een zwaartekracht van";g;"g betekent"
-1785 print" dat iemand van 80 kilo op deze"
-1787 print" planeet ";g*80;"kilo zou wegen."
-1800 input" Wilt u een andere zwaartekracht";a$
+1570 CLS: LOCATE 2, 29: PRINT "** HET MANENSTELSEL **"
+1580 LOCATE 5, 10: PRINT "baanstraal  massa   periode": PRINT
+1585 FOR i=1 TO mn: z=mp(i)/da: GOSUB 2650
+1590 PRINT TAB(12);mr(i);TAB(23);mn(i);TAB(31);z;" dagen": NEXT i
+1600 PRINT: PRINT TAB(10);"Wilt u een ander stelsel ";: INPUT a$
+1610 IF LEFT$(a$, 1)="j" OR LEFT$(a$, 1)="J" THEN GOTO 1190
+
+1620 CLS: LOCATE 2, 29: PRINT "** PLANEET GEGEVENS **"
+1630 PRINT " Deze planeet heeft een gemiddelde"
+1635 z=tp-460: GOSUB 2700
+1640 PRINT " oppervlakte-temperatuur van ";z: PRINT " graden C.";
+1645 PRINT " Dit betekent een baanstraal"
+1647 z=rp: GOSUB 2650
+1650 PRINT " van ";z;" astronomische eenheden"
+1655 PRINT " (";z*150;" miljoen km.)."
+1660 z=ca: GOSUB 2650: PRINT " Perihelium = ";z;"ae": PRINT " Aphelium = ";
+1665 z=fa: GOSUB 2650: PRINT z;"ae."
+1670 z=pp: GOSUB 2650: PRINT " Een jaar is ";z;" aardejaren lang."
+1680 PRINT " ";s$;" lijkt";
+1690 IF sa>1.5 OR sa<.75 THEN PRINT " veel"
+1700 IF sa>1 THEN PRINT " groter";: GOTO 1710
+1705 PRINT " kleiner";
+1710 PRINT " dan onze zon."
+1720 IF g<.95 OR g>1.05 THEN GOTO 1730
+1725 PRINT " De zwaartekracht is vrijwel gelijk": PRINT " aan die van de aarde."
+1727 GOTO 1800
+1730 PRINT " Aangezien de zwaartekracht";: IF g<1 THEN GOTO 1760
+1740 PRINT " groter is": PRINT " dan op aarde verwachten we"
+1750 PRINT " een dichtere atmosfeer. De tektonische"
+1752 PRINT " werking is groter maar er is ook"
+1754 PRINT " meer weerstand. We verwachten daarom"
+1756 PRINT " meer continenten en kleinere bergen;"
+1758 PRINT " Aardbevingen komen vaker voor en zijn": PRINT " heviger.": GOTO 1780
+1760 PRINT " kleiner is": PRINT " dan op aarde verwachten we"
+1770 PRINT " een dunnere atmosfeer. Er is minder"
+1772 PRINT " tektonische werking en ook de"
+1774 PRINT " weerstand is kleiner. We verwachten"
+1776 PRINT " daarom minder bergen, maar ze kunnen": PRINT " veel hoger worden."
+1778 PRINT " Aardbevingen, als ze al voorkomen,"
+1779 PRINT " zullen minder hevig zijn."
+1780 PRINT " Een zwaartekracht van";g;"g betekent"
+1785 PRINT " dat iemand van 80 kilo op deze"
+1787 PRINT " planeet ";g*80;"kilo zou wegen."
+1800 INPUT " Wilt u een andere zwaartekracht";a$
+1810 IF LEFT$(a$, 1)="j" OR LEFT$(a$, 1)="J" THEN GOTO 1000
 1810 ifleft$(a$,1)="j"then1000
+
 1820 print"S^         ** LEVEN? **"
 1830 ifm<.055orm>17.6thenprint"^Vanwege de slechte atmosfeer":goto2080
 1840 ifrp<rmorrp>rxthenprint"^Vanwege de afstand tot de zon":goto2080
