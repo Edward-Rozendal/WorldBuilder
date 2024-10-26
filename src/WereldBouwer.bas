@@ -248,73 +248,72 @@
 1787 PRINT " planeet ";g*80;"kilo zou wegen."
 1800 INPUT " Wilt u een andere zwaartekracht";a$
 1810 IF LEFT$(a$, 1)="j" OR LEFT$(a$, 1)="J" THEN GOTO 1000
-1810 ifleft$(a$,1)="j"then1000
 
-1820 print"S^         ** LEVEN? **"
-1830 ifm<.055orm>17.6thenprint"^Vanwege de slechte atmosfeer":goto2080
-1840 ifrp<rmorrp>rxthenprint"^Vanwege de afstand tot de zon":goto2080
-1850 ifsh<32orll>175thenprint"^Aangezien er nooit vloeibaar water is": goto2080
-1860 ifas*p>1.5then1870
-1865 print"^De planeet is te jong; er kan nog"
-1867 print" geen leven zijn ontstaan.":goto2090
-1870 ifp<.95then1880
-1875 print"^Aangezien ";s$;" op haar":print" sterfbed ligt":goto2080
-1880 print"^Mogelijk zijn er ";
-1890 ifas*p<2*gthenprint"bacterien en":print" blauwgroene algen.":goto2060
-1900 ifas*p<3*gthenprint"eencelligen met":print" een kern.":goto2060
-1910 ifas*p<4*gthenprint"eenvoudige":print" meercelligen.":goto2060
-1920 ifas*p>4.4*gthen1930
-1925 print"gewervelde":print" waterdieren en planten op het land.":goto2060
-1930 print"grote op het land":print" levende dieren en misschien"
-1935 print" intelligente wezens."
-1940 ifg<.95then1990
-1950 ifg<1.05then2030
-1960 print" Grotere zwaartekracht betekent een"
-1961 print" dichtere atmosfeer die grote vogels"
-1962 print" kan dragen. Maar zelfs een kleine val"
-1963 print" is dodelijk, zodat hoge reactiesnel-"
-1964 print" heden noodzakelijk zijn. In het"
-1965 print" algemeen zullen levensvormen korter"
-1966 print" en steviger zijn dan op aarde."
-1970 ifg>1.2thenprint" Er zijn geen tweebenige wezens":print" zoals wij."
-1980 print" De dikke atmosfeer verbetert de"
-1981 print" geluidsoverdracht; daarom zullen"
-1982 print" dieren meer op hun gehoor vertrouwen.":goto2030
-1990 print" Kleinere zwaartekracht betekent een"
-1991 print" dunnere atmosfeer. Vogels, als ze"
-1992 print" al voorkomen, hebben grote vleugels."
-1993 print" Alle levensvormen zullen hoger en"
-1994 print" slanker gebouwd zijn dan die op aarde."
-2000 print" Tweebenige wezens kunnen zeker":print" voorkomen."
-2010 print" De dunne atmosfeer bemoeilijkt"
-2011 print" geluidsoverdracht, zodat de dieren"
-2012 print" grote of helemaal geen oren zullen"
-2013 print" hebben. Hun longen moeten groter zijn."
-2020 iftp<75then2030
-2025 print" Het leven moet zich op een of andere"
-2026 print" manier beschermen tegen het zonlicht."
-2030 ifsa>.75then2040
-2032 print" Vanwege de kleine zon zullen de"
-2034 print" dieren grote ogen hebben of op"
-2036 print" andere zintuigen vertrouwen."
-2040 ifsa<1.5then2050
-2042 print" Tenzij de atmosfeer veel licht"
-2044 print" tegenhoudt, zullen de dieren"
-2046 print" kleine ogen hebben."
-2050 ifhi-lo<50then2060
-2052 print" Vanwege de grote temperatuurvariaties"
-2054 print" zal het leven zich vooral ondergronds"
-2056 print" en onder water bevinden."
-2060 if(tp-460)<32or(tp-460)>86org>1.5org<.68orm<.4orm>2.35thenhm=0:goto2090
-2065 ifda>96orsh>120orll<-30orhi>110orlo<-10thenhm=O:goto2090
-2070 hm=1:goto2090
-2079 print"bewoonbaar vinden."
-2080 print" zal op deze planeet waarschijnlijk":print" geen leven zijn."
-2090 print" Mensen zullen deze wereld"
-2095 print" waarschijnlijk ";:ifhm=0thenprint"on";
-2100 print"bewoonbaar vinden."
-2110 input"^Wilt u een andere planeet";a$
-2120 ifleft$(a$,1)="j"then970
+1820 CLS: PRINT TAB(10);"** LEVEN? **": PRINT
+1830 IF m<.055 OR m>17.6 THEN PRINT " Vanwege de slechte atmosfeer": GOTO 2080
+1840 IF rp<rm OR rp>rx THEN PRINT " Vanwege de afstand tot de zon": GOTO 2080
+1850 IF sh<32 OR ll>175 THEN PRINT " Aangezien er nooit vloeibaar water is": GOTO 2080
+1860 IF as1*p>1.5 THEN GOTO 1870
+1865 PRINT " De planeet is te jong; er kan nog"
+1867 PRINT " geen leven zijn ontstaan.": GOTO 2090
+1870 IF p<.95 THEN GOTO 1880
+1875 PRINT " Aangezien ";s$;" op haar": PRINT " sterfbed ligt": GOTO 2080
+1880 PRINT " Mogelijk zijn er ";
+1890 IF as1*p<2*g THEN PRINT "bacterien en": PRINT " blauwgroene algen.": GOTO 2060
+1900 IF as1*p<3*g THEN PRINT "eencelligen met": PRINT " een kern.": GOTO 2060
+1910 IF as1*p<4*g THEN PRINT "eenvoudige": PRINT " meercelligen.": GOTO 2060
+1920 IF as1*p>4.4*g THEN GOTO 1930
+1925 PRINT "gewervelde": PRINT " waterdieren en planten op het land.": GOTO 2060
+1930 PRINT "grote op het land": PRINT " levende dieren en misschien"
+1935 PRINT " intelligente wezens."
+1940 IF g<.95 THEN GOTO 1990
+1950 IF g<1.05 THEN GOTO 2030
+1960 PRINT " Grotere zwaartekracht betekent een"
+1961 PRINT " dichtere atmosfeer die grote vogels"
+1962 PRINT " kan dragen. Maar zelfs een kleine val"
+1963 PRINT " is dodelijk, zodat hoge reactiesnel-"
+1964 PRINT " heden noodzakelijk zijn. In het"
+1965 PRINT " algemeen zullen levensvormen korter"
+1966 PRINT " en steviger zijn dan op aarde."
+1970 IF g>1.2 THEN PRINT " Er zijn geen tweebenige wezens": PRINT " zoals wij."
+1980 PRINT " De dikke atmosfeer verbetert de"
+1981 PRINT " geluidsoverdracht; daarom zullen"
+1982 PRINT " dieren meer op hun gehoor vertrouwen.": GOTO 2030
+1990 PRINT " Kleinere zwaartekracht betekent een"
+1991 PRINT " dunnere atmosfeer. Vogels, als ze"
+1992 PRINT " al voorkomen, hebben grote vleugels."
+1993 PRINT " Alle levensvormen zullen hoger en"
+1994 PRINT " slanker gebouwd zijn dan die op aarde."
+2000 PRINT " Tweebenige wezens kunnen zeker voorkomen."
+2010 PRINT " De dunne atmosfeer bemoeilijkt"
+2011 PRINT " geluidsoverdracht, zodat de dieren"
+2012 PRINT " grote of helemaal geen oren zullen"
+2013 PRINT " hebben. Hun longen moeten groter zijn."
+2020 IF tp<75 THEN GOTO 2030
+2025 PRINT " Het leven moet zich op een of andere"
+2026 PRINT " manier beschermen tegen het zonlicht."
+2030 IF sa>.75 THEN GOTO 2040
+2032 PRINT " Vanwege de kleine zon zullen de"
+2034 PRINT " dieren grote ogen hebben of op"
+2036 PRINT " andere zintuigen vertrouwen."
+2040 IF sa<1.5 THEN GOTO 2050
+2042 PRINT " Tenzij de atmosfeer veel licht"
+2044 PRINT " tegenhoudt, zullen de dieren"
+2046 PRINT " kleine ogen hebben."
+2050 IF hi-lo<50 THEN GOTO 2060
+2052 PRINT " Vanwege de grote temperatuurvariaties"
+2054 PRINT " zal het leven zich vooral ondergronds"
+2056 PRINT " en onder water bevinden."
+2060 IF (tp-460)<32 OR (tp-460)>86 OR g>1.5 OR g<.68 OR m<.4 OR m>2.35 THEN hm=0: GOTO 2090
+2065 IF da>96 OR sh>120 OR ll<-30 OR hi>110 OR lo<-10 THEN hm=O: GOTO 2090
+2070 hm=1: GOTO 2090
+2080 PRINT " zal op deze planeet waarschijnlijk": PRINT " geen leven zijn."
+2090 PRINT " Mensen zullen deze wereld"
+2095 PRINT " waarschijnlijk ";: IF hm=0 THEN PRINT "on";
+2100 PRINT "bewoonbaar vinden."
+2110 PRINT: INPUT " Wilt u een andere planeet "; a$
+2120 IF LEFT$(a$, 1)="j" OR LEFT$(a$, 1)="J" THEN GOTO 970
+
 2130 print"S^       ** ANDERE PLANETEN **"
 2140 print"^Hoeveel planeten moet het stelsel"
 2145 print" van ";s$;:input" bevatten";np
