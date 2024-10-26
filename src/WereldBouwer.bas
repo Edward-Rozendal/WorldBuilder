@@ -314,67 +314,67 @@
 2110 PRINT: INPUT " Wilt u een andere planeet "; a$
 2120 IF LEFT$(a$, 1)="j" OR LEFT$(a$, 1)="J" THEN GOTO 970
 
-2130 print"S^       ** ANDERE PLANETEN **"
-2140 print"^Hoeveel planeten moet het stelsel"
-2145 print" van ";s$;:input" bevatten";np
-2150 ifnp>15thennp=15:print"^We moeten dat beperken tot vijftien."
-2160 ifnp<=1then2600
-2170 am=1180/sqr(ms)-m*sqr(rp)
-2180 r(1)=rp:mp(1)=m
-2190 fori=2tonp
-2200 print"S"
-2210 print"^Ons eigen zonnestelsel ziet er zo uit:"
-2220 print"^  planeet    massa      baanstraal"
-2230 print"^  Mercurius    0.055     0.387"
-2240 print"   Venus        0.815     0.723"
-2250 print"   Aarde        1.0       1.0"
-2260 print"   Mars         0.108     1.524"
-2270 print"   Jupiter    317.9       5.203"
-2280 print"   Saturnus    95.2       9.539"
-2290 print"   Uranus      14.6      19.18"
-2300 print"   Neptunus    17.2      30.06"
-2310 print"   Pluto         .1      39.44"
-2315 print"^Massa in aardmassa's, afstand in":print" astronomische eenheden."
-2320 print"^Massa planeet nr.";i;:inputmp(i)
-2330 ifmp(i)<1000then2340
-2335 print"^Een hemellichaam van deze afmetingen"
-2337 print" Wordt een ster.":goto2320
-2340 input"^Baan straal";r(i)
-2350 ifr(i)>ms/5then2360
-2355 print"^Te dicht bij de zon. De planeet zal"
-2357 print" in stukken breken.":goto2340
-2360 ifr(i)<56*msthen2370
-2365 print"^Te ver weg. De planeet zal aan het"
-2367 print" stelsel ontsnappen.":goto2340
-2370 fork=1toi-1:ifr(k)>.9*r(i)andr(k)<1.1*r(i)then2430
-2380 nextk
-2390 a1=mp(i)*sqr(r(i))
-2400 ifa1<amthen2410
-2405 print"^Deze planeet heeft teveel massa om"
-2407 print" In het stelsel te passen.":goto2210
+2130 CLS: PRINT TAB(10);"** ANDERE PLANETEN **": PRINT
+2140 PRINT " Hoeveel planeten moet het stelsel"
+2145 PRINT " van ";s$;: INPUT " bevatten";np
+2150 IF np>15 THEN np=15: PRINT " We moeten dat beperken tot vijftien."
+2160 IF np<=1 THEN GOTO 2600
+2170 am=1180/SQR(ms)-m*SQR(rp)
+2180 r(1)=rp: mp(1)=m
+2190 FOR i=2 TO np
+2200 CLS: PRINT
+2210 PRINT "Ons eigen zonnestelsel ziet er zo uit:": PRINT
+2220 PRINT "  planeet    massa      baanstraal"
+2230 PRINT "   Mercurius    0.055     0.387"
+2240 PRINT "   Venus        0.815     0.723"
+2250 PRINT "   Aarde        1.0       1.0"
+2260 PRINT "   Mars         0.108     1.524"
+2270 PRINT "   Jupiter    317.9       5.203"
+2280 PRINT "   Saturnus    95.2       9.539"
+2290 PRINT "   Uranus      14.6      19.18"
+2300 PRINT "   Neptunus    17.2      30.06"
+2310 PRINT "   Pluto        0.1      39.44"
+2315 PRINT: PRINT "Massa in aardmassa's, afstand in": PRINT "astronomische eenheden."
+2320 PRINT: PRINT "Massa planeet nr.";i;: INPUT mp(i)
+2330 IF mp(i)<1000 THEN GOTO 2340
+2335 PRINT "Een hemellichaam van deze afmetingen"
+2337 PRINT "wordt een ster.": GOTO 2320
+2340 INPUT "Baan straal";r(i)
+2350 IF r(i)>ms/5 THEN GOTO 2360
+2355 PRINT "Te dicht bij de zon. De planeet zal"
+2357 PRINT "in stukken breken.": GOTO 2340
+2360 IF r(i)<56*ms THEN GOTO 2370
+2365 PRINT "Te ver weg. De planeet zal aan het"
+2367 PRINT "stelsel ontsnappen.": GOTO 2340
+2370 FOR k=1 TO i-1: IF r(k)>.9*r(i) AND r(k)<1.1*r(i) THEN GOTO 2430
+2380 NEXT k
+2390 a1=mp(i)*SQR(r(i))
+2400 IF a1<am THEN GOTO 2410
+2405 PRINT "Deze planeet heeft teveel massa om"
+2407 PRINT "In het stelsel te passen.": GOTO 2210
 2410 am=am-a1
-2420 nexti:goto2450
-2430 print"^Deze planeet is te dicht bij andere"
-2435 print" planeten om een stabiele baan te":print" hebben."
-2440 goto2210
-2450 fori=1tonp:f=0:fork=1tonp-i
-2460 ifr(k+1)>=r(k)then2500
-2470 t=r(k):r(k)=r(k+1):r(k+1)=t
-2480 t=mp(k):mp(k)=mp(k+1):mp(k+1)=t
-2490 f=1
-2500 nextk
-2510 iff=0then2530
-2520 nexti
-2530 print"^planeet nr.  massa  baanstraal"
-2540 fori=1tonp
-2550 printi,mp(i),r(i);
-2560 ifr(i)>rmandr(i)<rxandmp(i)>.055andmp(i)<17.6thenprint" leven?"
-2565 print" "
-2570 nexti
-2580 input"^Wilt u een ander stelsel proberen";a$
-2590 ifleft$(a$,1)="j"then2130
-2600 input"^Wilt u een andere ster proberen";a$
-2610 ifleft$(a$,1)="j"then260
-2620 end
-2650 z=int(z*100+.5)/100:return
-2700 z=int((z-32)/.18+.5)/10:return
+2420 NEXT i: GOTO 2450
+2430 PRINT "Deze planeet is te dicht bij andere"
+2435 PRINT "planeten om een stabiele baan te": PRINT " hebben."
+2440 GOTO 2210
+2450 FOR i=1 TO np: f=0: FOR k=1 TO np-i
+        2460 IF r(k+1)>=r(k) THEN GOTO 2500
+        2470 t=r(k): r(k)=r(k+1): r(k+1)=t
+        2480 t=mp(k): mp(k)=mp(k+1): mp(k+1)=t
+        2490 f=1
+    2500 NEXT k
+2510 IF f=0 THEN GOTO 2530
+2520 NEXT i
+2530 PRINT: PRINT " Planeet nr.  massa  baanstraal"
+2540 FOR i=1 TO np
+    2550 PRINT i,mp(i),r(i);
+    2560 IF r(i)>rm AND r(i)<rx AND mp(i)>.055 AND mp(i)<17.6 THEN PRINT " leven?" ELSE PRINT
+2570 NEXT i
+2580 PRINT: INPUT "Wilt u een ander stelsel proberen";a$
+2590 IF LEFT$(a$, 1)="j" OR LEFT$(a$, 1)="J" THEN GOTO 2130
+2600 INPUT "Wilt u een andere ster proberen";a$
+2610 IF LEFT$(a$, 1)="j" OR LEFT$(a$, 1)="J" THEN GOTO 260
+2620 END
+
+2650 z=int(z*100+.5)/100: RETURN
+2700 z=int((z-32)/.18+.5)/10: RETURN
