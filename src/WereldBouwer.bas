@@ -150,23 +150,24 @@
 1175 PRINT TAB(10);: INPUT t1
 1180 IF t1<0 OR t1>90 THEN GOTO 1170
 
-1190 input"^Hoeveel manen wenst u";mn
-1200 ifmn>10thenprint"^Voor het gemak beperken we dat tot 10.":mn=10
-1205 dim mn(mn),mr(mn)
-1210 mm=1000:h=0:r=56*g
-1220 ifmn<=0then1320
-1230 fori=1tomn
-1240 print"^Massa maan nr.";i;" (onze maan = l)";:inputmn(i)
-1250 input"^Baanstraal (onze maan = 30)";mr(i)
-1260 ifmr(i)<3*gthenprint"^Te dichtbij; ze zal in stukken breken.":goto1250
-1270 ifmr(i)>56*gthenprint"^Te ver weg; ze ontsnapt.":goto1250
-1280 mp(i)=sqr(mr(i)^3/m)*4
-1290 ifmr(i)<rthenmm=mp(i):r=mr(i)
-1300 h=mn(i)*.01235/(mr(i)^3)+h
-1310 nexti
+1190 PRINT: PRINT TAB(10);"Hoeveel manen wenst u ";: INPUT mn
+1200 IF mn>10 THEN PRINT TAB(10);"Voor het gemak beperken we dat tot 10.": mn=10
+1205 DIM mn(mn),mr(mn)
+1210 mm=1000: h=0: r=56*g
+1220 IF mn<=0 THEN GOTO 1320
+1230 FOR i=1 TO mn
+    1240 PRINT TAB(10);"Massa maan nr.";i;" (onze maan = 1) ";: INPUT mn(i)
+    1250 PRINT TAB(10);"Baanstraal (onze maan = 30) ";: INPUT mr(i)
+    1260 IF mr(i)<3*g THEN PRINT TAB(10);"Te dichtbij; ze zal in stukken breken.": GOTO 1250
+    1270 IF mr(i)>56*g THEN PRINT TAB(10);"Te ver weg; ze ontsnapt.": GOTO 1250
+    1280 mp(i)=SQR(mr(i)^3/m)*4
+    1290 IF mr(i)<r THEN mm=mp(i): r=mr(i)
+    1300 h=mn(i)*.01235/(mr(i)^3)+h
+1310 NEXT i
 1320 h2=.85*d^4/m*(ms*333500/(11759*rp)^3+h)
-1330 da=1.75926e+06*h2*14+10
-1340 ifda>mmthenda=mm
+1330 da=1759260!*h2*14+10
+1340 IF da>mm THEN da=mm
+
 1350 print"S^       ** PLANEET-GEGEVENS **"
 1353 z=da:gosub2650
 1355 print"^Een dag duurt op deze planeet":print" ongeveer ";z;" uur."
