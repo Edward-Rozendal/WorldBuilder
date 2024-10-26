@@ -168,40 +168,41 @@
 1330 da=1759260!*h2*14+10
 1340 IF da>mm THEN da=mm
 
-1350 print"S^       ** PLANEET-GEGEVENS **"
-1353 z=da:gosub2650
-1355 print"^Een dag duurt op deze planeet":print" ongeveer ";z;" uur."
-1360 print" Een jaar duurt ";int(87660/da*pp+.5)/10;" dagen."
-1365 print" De hoek van de rotatie-as heeft de"
-1367 print" volgende invloeden op het klimaat:"
-1370 hi=(1+.025*da/24)*tp-460:lo=(1-.025*da/24)*tp-460
-1380 iflo<-460thenlo=-460
-1385 z=hi:gosub2700
-1390 print" De maximum temperatuur is vandaag":printz;" graden C."
-1395 z=lo:gosub2700
-1400 print" Vannacht zal de temperatuur dalen":print" tot";z;" graden C."
-1410 sh=hi+1.9*t1*(1+ec)^2:ll=lo-1.9*t1/(1+ec)^2
-1420 ifll<-460thenll=-460
-1425 z=sh:gosub2700
-1430 print" 's Zomers kan de temperatuur stijgen":print" tot ";z;" graden C."
-1435 z=ll:gosub2700
-1440 print" 's Winters verwachten we een minimum":print" van ";z;" graden C."
-1450 ifsh>32andll<175then1455
-1453 print" Er zijn perioden waarin geen":print" vloeibaar water kan bestaan."
-1455 print"^Tik een willekeurige toets voor"
-1457 print" informatie over het manenstelsel."
-1459 geta$:ifa$=""then1459
-1460 ifmn<=0then1600
-1470 ifmn=1then1570
-1480 fori=1tomn:f=O:fork=1tomn-i
-1490 ifmr(k+1)>=mr(k)then1540
-1500 t=mr(k):mr(k)=mr(k+1):mr(k+1)=t
-1510 t=mn(k):mn(k)=mn(k+1):mn(k+l)=t
-1520 t=mp(k):mp(k)=mp(k+1):mp(k+1)=t
-1530 f=1
-1540 nextk
-1550 iff=0then1570
-1560 nexti
+1350 CLS: LOCATE 2, 29: PRINT "** PLANEET-GEGEVENS **"
+1353 z=da: GOSUB 2650
+1355 LOCATE 5, 10: PRINT "Een dag duurt op deze planeet": PRINT TAB(10);"ongeveer ";z;" uur."
+1360 PRINT TAB(10);"Een jaar duurt "; INT(87660/da*pp+.5)/10;" dagen."
+1365 PRINT TAB(10);"De hoek van de rotatie-as heeft de "
+1367 PRINT TAB(10);"volgende invloeden op het klimaat:"
+1370 hi=(1+.025*da/24)*tp-460: lo=(1-.025*da/24)*tp-460
+1380 IF lo<-460 THEN lo=-460
+1385 z=hi: GOSUB 2700
+1390 PRINT TAB(10);"De maximumtemperatuur is vandaag": PRINT TAB(10);z;" graden C."
+1395 z=lo: GOSUB 2700
+1400 PRINT TAB(10);"Vannacht zal de temperatuur dalen": PRINT TAB(10);"tot ";z;" graden C."
+1410 sh=hi+1.9*t1*(1+ec)^2: ll=lo-1.9*t1/(1+ec)^2
+1420 IF ll<-460 THEN ll=-460
+1425 z=sh: GOSUB 2700
+1430 PRINT TAB(10);"'s Zomers kan de temperatuur stijgen": PRINT TAB(10);"tot ";z;" graden C."
+1435 z=ll: GOSUB 2700
+1440 PRINT TAB(10);"'s Winters verwachten we een minium": PRINT TAB(10);"van ";z;" graden C."
+1450 IF sh>32 AND ll<175 THEN GOTO 1455
+1453 PRINT TAB(10);"Er zijn perioden waarin geen vloeibaar water kan bestaan."
+1455 PRINT: PRINT TAB(10);"Tik een willekeurige toets voor"
+1457 PRINT TAB(10);"informatie over het manenstelsel."
+1459 IF INKEY$ = "" THEN GOTO 1459
+1460 IF mn<=0 THEN GOTO 1600
+1470 IF mn=1 THEN GOTO 1570
+1480 FOR i=1 TO mn: f=O: FOR k=1 TO mn-i
+        1490 IF mr(k+1)>=mr(k) THEN 1540
+        1500 t=mr(k): mr(k)=mr(k+1): mr(k+1)=t
+        1510 t=mn(k): mn(k)=mn(k+1): mn(k+l)=t
+        1520 t=mp(k): mp(k)=mp(k+1): mp(k+1)=t
+        1530 f=1
+    1540 NEXT k
+    1550 IF f=0 THEN 1570
+1560 NEXT i
+
 1570 print"S^      ** HET MANENSTELSEL **"
 1580 print"^baanstraal  massa   periode"
 1585 fori=1tomn:z=mp(i)/da:gosub2650
