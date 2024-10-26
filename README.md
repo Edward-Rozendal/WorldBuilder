@@ -7,7 +7,7 @@ For background information, the author refers to
 ["Planets for Man"](https://www.rand.org/pubs/commercial_books/CB183-1.html) by Stephen H. Dole and Isaac Asimov
 and to "How to Build a Planet" [Poul Anderson](https://openlibrary.org/authors/OL24072A/Poul_Anderson).
 
-## Kijk
+## KIJK
 Over time, different variations have emerged. A Dutch translation was made by Steven Bolt and Carl Koppeschaar
 and published in January 1984 in the monthly magazine [KIJK](https://www.kijkmagazine.nl/).
 For calculations of the ecosphere they also refer to
@@ -32,7 +32,16 @@ some time ago. The website contained no description, not even a link to the sour
 It does not seem to be present anymore.
 
 ## Updated versions
-The orginal source code, as well as its variants, is reader old and specific for
+The orginal source code, as well as its variants, is rather old and specific for
 some computer and BASIC version. Therefore, both the orginal version from Stephen Kimmel
-as well as the Dutch version from the Kijk magazine are adapted to work with
+as well as the Dutch version from the KIJK magazine are adapted to work with
 [QB64](https://github.com/Galleondragon/qb64).
+
+## Python version
+The port to QB64 is kept close to the original code. Therefore, it is still old and
+unstructured BASIC code. It really needs good refactoring. But instead of refactoring
+the BASIC code, it is ported to [Python](https://www.python.org/) first. The Python
+version is based on the Dutch version from the KIJK magazine. The initial version is
+a simple BASIC to Python translation with some elementary functions extracted.
+Further refactoring should provide descriptive variable names, clear functions,
+documented algorithms, etc.
