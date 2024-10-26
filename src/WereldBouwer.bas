@@ -116,38 +116,40 @@
 940 PRINT: PRINT TAB(10);: INPUT "Wilt u een andere ster";a$
 950 IF LEFT$(a$, 1)="j" OR LEFT$(a$, 1) = "J" THEN GOTO 260
 
-955 Hm=0
+955 hm=0
 960 p=p/100
-970 print"S^      ** PLANEET-GEGEVENS **"
-980 print"^De aarde heeft een gemiddelde"
-985 print"^oppervlakte-temperatuur van 16 C."
-990 input"^Welke temperatuur wenst u";tp:tp=1.8*tp+492
-1000 print"^Gewenste zwaartekracht aan de":input"^oppervlakte (aarde = 1)";g
-1010 ifg=0thenprint"^Enige zwaartekracht is noodzakelijk.":goto1000
-1020 rp=sqr(l/(tp/520)^4)
-1030 if rp>ms/5then1040
-1035 print" Deze planeet bevindt zich te dicht bij"
-1037 print" haar zon om stabiel te kunnen zijn.":goto970
-1040 pp=sqr(rp^3/ms)
-1050 is=l/rp^2
-1060 rm=sqr(1/1.929)
-1070 rx=sqr(1/.694)
+970 CLS: LOCATE 2, 29: PRINT "** PLANEET-GEGEVENS **"
+980 LOCATE 5, 10: PRINT "De aarde heeft een gemiddelde oppervlakte"
+985 PRINT TAB(10);"temperatuur van 16 C."
+990 PRINT TAB(10);: INPUT "Welke temperatuur wenst u";tp: tp=1.8*tp+492
+1000 PRINT: PRINT TAB(10);"Gewenste zwaartekracht aan de oppervlakte"
+1005 PRINT TAB(10);"(aarde=1) ";: INPUT g
+1010 IF g<=0 THEN PRINT TAB(10);"Enige zwaartekracht is noodzakelijk.": GOTO 1000
+1020 rp=SQR(l/(tp/520)^4)
+1030 IF rp>ms/5 THEN GOTO 1040
+1035 PRINT TAB(10);"Deze planeet bevindt zich te dicht bij"
+1037 PRINT TAB(10);"haar zon om stabiel te kunnen zijn.": GOTO 970
+1040 pp=SQR(rp^3/ms)
+1050 is1=l/rp^2
+1060 rm=SQR(1/1.929)
+1070 rx=SQR(1/.694)
 1080 sa=ds/rp
-1090 print"^Hoe groot moet de planeet zijn"
-1095 input"^in verhouding tot de aarde";d
+1090 PRINT: PRINT TAB(10);"Hoe groot moet de planeet zijn"
+1095 PRINT TAB(10);"tot de aarde ";: INPUT d
 1100 m=g*d^2
-1110 ifm>.055then1120
-1115 print"^Deze planeet zal geen zuurstof atmosfeer":print" vasthouden."
-1120 ifm<17.6then1130
-1125 print"Deze planeet zal haar waterstof-"
-1127 print" atmosfeer niet kwijt raken."
-1130 print"^De baan van de aarde heeft een":print"^excentriciteit van .01672"
-1140 input"^Gewenste excentriciteit ( <1)";ec
-1150 ifec>1then1140
-1160 ca=(1-ec)*rp:fa=(1+ec)*rp
-1170 print"^Wat is de hoek van de rotatite-as"
-1175 input"^(aarde = 23.5 graden)";t1
-1180 ift1<0ort1>90then1170
+1110 IF m>.055 THEN 1120
+1115 PRINT TAB(10);"^Deze planeet zal geen zuurstof atmosfeer vasthouden."
+1120 IF m<17.6 THEN 1130
+1125 PRINT TAB(10);"Deze planeet zal haar waterstof-"
+1127 PRINT TAB(10);"atmosfeer niet kwijt raken."
+1130 PRINT: PRINT TAB(10);"De baan van de aarde heeft een excentriciteit van"
+1140 PRINT TAB(10);".01672 Gewenste excentriciteit (<1) ";: INPUT ec
+1150 IF ec>1 THEN GOTO 1140
+1160 ca=(1-ec)*rp: fa=(1+ec)*rp
+1170 PRINT: PRINT TAB(10);"Wat is de hoek van de rotatie-as": PRINT TAB(10);"(aarde = 23.5 graden)"
+1175 PRINT TAB(10);: INPUT t1
+1180 IF t1<0 OR t1>90 THEN GOTO 1170
+
 1190 input"^Hoeveel manen wenst u";mn
 1200 ifmn>10thenprint"^Voor het gemak beperken we dat tot 10.":mn=10
 1205 dim mn(mn),mr(mn)
