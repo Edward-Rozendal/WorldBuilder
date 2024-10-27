@@ -22,9 +22,7 @@ def clear_screen():
 
 def title_screen():
     clear_screen()
-    print("")
-    print("** WERELD BOUWER **")
-    print("")
+    print("\n** WERELD BOUWER **\n")
     print("door Stephen Kimmel")
     print("een programma voor")
     print("de bouw van vreemde")
@@ -66,30 +64,24 @@ def init_data():
 
 def menu_screen():
     clear_screen()
-    print("")
-    print("&& WERELD BOUWER &&")
-    print("")
-    print("tik het nr. van de gewenste operatie")
-    print("")
+    print("\n&& WERELD BOUWER &&\n")
+    print("tik het nr. van de gewenste operatie\n")
     print("1) gebruik een bekende ster")
     print("2) gebruik een andere ster")
     print("3) druk een lijst van bekende sterren")
-    print("4) stop")
-    print("")
+    print("4) stop\n")
     return input("Uw keus: ")
 
 
 def list_stars():
     clear_screen()
-    print("Dit zijn de sterren op mijn lijstje:")
-    print("")
+    print("Dit zijn de sterren op mijn lijstje:\n")
     for i in range(18):
-        print("  {:<38}{}".format(s2[i], s2[i + 18]))
-    print("")
+        print(f"  {s2[i]:<38}{s2[i + 18]}")
 
 
 def select_known_star():
-    s = input("Welke ster zal ik gebruiken? ")
+    s = input("\nWelke ster zal ik gebruiken? ")
     sk = 0
     try:
         sk = s2.index(s)
@@ -104,11 +96,48 @@ def select_known_star():
     p = (1.25 - ms / pow(l, 0.285714)) / 0.005
     if (p / 100 * as1) > 10:
         p = 1000 / as1
+    show_stellar_data(s, s1, sc, ms, l, as1, p)
+    a = input("\nWilt u een andere ster? ")
+    if len(a) > 0 and a[0].lower() in ('j', 'y'):
+        return
 
 
 def define_own_star():
     clear_screen()
     s = input("Hoe heet de ster? ")
+
+
+def show_stellar_data(s, s1, sc, ms, l, as1, p):
+    j = sc2.index(s1)
+    ts = 6000 * ms**0.35
+    clear_screen()
+    print("** STELLAR DATA **\n")
+    print(f"De gekozen ster, {s} is een {s1}{ int(sc*10)} ster.")
+    if sc > 0.75:
+        print(f"Ze is {c2[j+1]} van kleur,")
+    elif sc < 0.25:
+        print(f"Ze is {c2[j]} van kleur,")
+    else:
+        print(f"Ze heeft een kleur tussen {c2[j]} en {c2[j+1]}")
+    print(f"en haar massa is {ms+0.005:.2f} zonmassa's.")
+    print(f"Ze is {l:.2f} maal zo helder als de zon.")
+    print(f"Haar verwachte levensduur is {as1:.2f} miljard jaar")
+    print(f"waarvan {p:.0f}% of ongeveer {(as1*p + 0.5) / 100:.2f}")
+    print("miljard jaar zijn verstreken.")
+    if p > 95:
+        print(f"{s} ligt op haar sterfbed.")
+    print(f"Ze heeft een oppervlaktetemperatuur van {ts:.0f} Kelvin.")
+    if 2.5 < j+1 + sc < 7:
+        print("Ze heeft mogelijk een planetenstelsel.")
+    else:
+        print("Ze heeft waarschijnlijk geen planetenstelsel.")
+    print(f"{s} zal sterven als een")
+    if ms < 1.5:
+        print("witte dwerg.")
+    elif ms < 10:
+        print("neutronster na een supernove-explosie.")
+    else:
+        print("zwart gat na een supernova-explosie.")
 
 
 if __name__ == '__main__':
