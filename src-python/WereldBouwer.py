@@ -105,6 +105,63 @@ def select_known_star():
 def define_own_star():
     clear_screen()
     s = input("Hoe heet de ster? ")
+    sc = 0
+    ms = 0.0
+    l = 0.0
+    p = 0
+    while True:
+        s1 = input("\nWat is de spectraalklasse? ")
+        if len(s1) == 0 or s1[0] in ('/', '?'):
+            m = float(input("\nAbsolute magnitude ( zon=4.85 )? "))
+            l = 2.512 ** (4.85 - m)
+            ms = l ** 0.285714
+            for i in range(1, len(m2)-1):
+                if m2[i] < ms:
+                    j = i - 1
+                    break
+            else:
+                print("\nMassa error.")
+                continue
+            s1 = sc2[i-1]
+            sc = int(((ms - m2[j]) / (m2[i] - m2[j]) * 10)) / 10
+            break
+        elif len(s1) == 2:
+            try:
+                sc = int(s1[1]) / 10
+                s1 = s1[0].lower()
+            except ValueError:
+                print("\nDie klasse is mij onbekend.")
+                continue
+            j = 0
+            for i in range(len(sc2)-1):
+                if s1 == sc2[i]:
+                    j = i
+                    break
+            else:
+                print("\nDie klasse is mij onbekend.")
+                continue
+            ms = m2[j] - sc * (m2[j] - m2[j + 1])
+            break
+        else:
+            print("<letter><cijfer> verwacht")
+            continue
+    as1 = ms**-2.5 * 10
+    while True:
+        print(f"\n{s} heeft een verwachte levensduur van ")
+        print(f"{as1:.1f} miljard jaar ")
+        p = float(input("\nWelk percentage (1-100) is voorbij? "))
+        if p / 100 * as1 < 18:
+            break
+        print("\nHet universum is circa 18 miljard jaar oud.")
+        a = input("\nWilt u een ander percentage? ")
+        if len(a) == 0 or a[0].lower() not in ('j', 'y'):
+            break
+    ms = ms * (1.25 - 0.005 * p)
+    l = ms ** 3.5
+    show_stellar_data(s, s1, sc, ms, l, as1, p)
+    a = input("\nWilt u een andere ster? ")
+    if len(a) > 0 and a[0].lower() in ('j', 'y'):
+        return
 
 
 def show_stellar_data(s, s1, sc, ms, l, as1, p):
