@@ -7,7 +7,7 @@ The original was written in BASIC by Stephen Kimmel and published in the June 19
 This version is based on the Dutch translation made by Steven Bolt and Carl Koppeschaar
 and published in January 1984 in the monthly magazine [KIJK](https://www.kijkmagazine.nl/).
 """
-
+import math
 from os import system, name
 
 
@@ -100,6 +100,9 @@ def select_known_star():
     a = input("\nWilt u een andere ster? ")
     if len(a) > 0 and a[0].lower() in ('j', 'y'):
         return
+    while True:
+        if planet_data(s, s1, sc, ms, l, as1, p):
+            break
 
 
 def define_own_star():
@@ -162,6 +165,9 @@ def define_own_star():
     a = input("\nWilt u een andere ster? ")
     if len(a) > 0 and a[0].lower() in ('j', 'y'):
         return
+    while True:
+        if planet_data(s, s1, sc, ms, l, as1, p):
+            break
 
 
 def show_stellar_data(s, s1, sc, ms, l, as1, p):
@@ -195,6 +201,54 @@ def show_stellar_data(s, s1, sc, ms, l, as1, p):
         print("neutronster na een supernove-explosie.")
     else:
         print("zwart gat na een supernova-explosie.")
+
+
+def planet_data(s, s1, sc, ms, l, as1, p):
+    hm = 0
+    p = p / 100
+    clear_screen()
+    print("\n** PLANEET-GEGEVENS **\n")
+    print("De aarde heeft een gemiddelde oppervlakte")
+    print("temperatuur van 16 graden Celsius.")
+    tp = int(input("Welke temperatuur wenst u? "))
+    tp = 1.8 * tp + 492
+    g = -1.0
+    while g <= 0:
+        print("\nGewenste zwaartekracht aan de oppervlakte")
+        g = float(input("(aarde=1)? "))
+        if g <= 0:
+            print("Enige zwaartekracht is noodzakelijk.")
+    rp = math.sqrt(l / (tp / 520) ** 4)
+    if rp <= ms / 5:
+        print("\nDeze planeet bevindt zich te dicht bij haar zon")
+        print("om stabiel te zijn.")
+        _ = input("Druk op Enter")
+        return False
+    pp = math.sqrt(rp**3 / ms)
+    rm = math.sqrt(1 / 1.929)
+    rx = math.sqrt(1 / 0.694)
+    ds = ms**0.3333
+    sa = ds / rp
+    print("\nHoe groot moet de planeet zijn in verhouding")
+    d = float(input("tot de aarde? "))
+    m = g * d**2
+    if m < 0.055:
+        print("Deze planeet zal geen zuurstofatmosfeer vasthouden.")
+    if m > 17.6:
+        print("Deze planeet zal haar waterstofatmosfeer niet kwijtraken.")
+    ec = 2
+    while ec > 1:
+        print("\nDe baan van de aarde heeft een excentriciteit")
+        ec = float(input("van 0.01672 Gewenste excentriciteit (<1)? "))
+    ca = (1 - ec) * rp
+    fa = (1 + ec) * rp
+    t1 = 100
+    while t1 < 0 or t1 > 90:
+        print("\nWat is de hoek van de rotatie-as (aarde =23.5 graden)?")
+        t1 = float(input())
+
+    _ = input("Druk op Enter")
+    return True
 
 
 if __name__ == '__main__':
