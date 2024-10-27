@@ -30,6 +30,11 @@ def title_screen():
     _ = input()
 
 
+def cnv(z):
+    """ Convert degrees fahrenheit to degrees celsius"""
+    return ((z - 32) / 0.18 + 0.5) / 10
+
+
 sc2 = ["o", "b", "a", "f", "g", "k", "m", "d"]
 m2 = [100, 17, 3.2, 1.54, 1.02, 0.75, 0.38, 0.0]
 c2 = ["blauw", "licht blauw", "wit", "licht geel", "geel", "oranje", "rood", "rood"]
@@ -279,6 +284,48 @@ def planet_data(s, s1, sc, ms, l, as1, p):
     da = 1759260 * h2 * 14 + 10
     if da > mm:
         da = mm
+
+    clear_screen()
+    print("\n\n** PLANEET-GEGEVENS **")
+    print(f"\nEen dag duurt op deze planeet ongeveer {da:.2f} uur")
+    yd = int(87660 / da * pp + .5) / 10
+    print(f"Een jaar duurt {yd:.1f} dagen")
+    print("De hoek van de rotatie-as heeft de volgende")
+    print("invloeden op het klimaat:")
+    hi = (1 + 0.025 * da / 24) * tp - 460
+    lo = (1 - 0.025 * da / 24) * tp - 460
+    if lo < -460:
+        lo = -460
+    print(f"De maximumtemperatuur is vandaag {cnv(hi):.0f} graden C")
+    print(f"Vannacht zal de temperatuur dalen tot {cnv(lo):.0f} graden C")
+    sh = hi + 1.9 * t1 * (1 + ec) ** 2
+    ll = lo - 1.9 * t1 / (1 + ec) ** 2
+    if ll < -460:
+        ll = -460
+    print(f"'s Zomers kan de temperatuur stijgen tot {cnv(sh):.0f} graden C")
+    print(f"'s Winters verwachten we een minium van {cnv(ll):.0f} graden C")
+    if sh <= 32 or ll >= 175:
+        print("Er zijn perioden waarin geen vloeibaar water kan bestaan.")
+    print("\nDruk op Enter voor")
+    _ = input("informatie over het manenstelsel.")
+
+    if mcnt > 0:
+        if mcnt > 1:
+            for i in range(mcnt):
+                f = 0
+                for k in range(mcnt - 1):
+                    if mr[k + 1] < mr[k]:
+                        mr[k], mr[k + 1] = mr[k + 1], mr[k]
+                        mn[k], mn[k + 1] = mn[k + 1], mn[k]
+                        mp[k], mp[k + 1] = mp[k + 1], mp[k]
+                        f = 1
+                if f == 0:
+                    break
+        clear_screen()
+        print("\n\n** HET MANENSTELSEL **")
+        print("\nbaanstraal  massa   periode\n")
+        for i in range(mcnt):
+            print(f"{mr[i]:7.1f} {mn[i]:8.2f} {mp[i] / da:9.2f} dagen")
 
     _ = input("Druk op Enter")
     return True
