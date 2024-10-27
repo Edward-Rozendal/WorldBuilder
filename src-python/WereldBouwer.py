@@ -118,14 +118,14 @@ def define_own_star():
             m = float(input("\nAbsolute magnitude ( zon=4.85 )? "))
             l = 2.512 ** (4.85 - m)
             ms = l ** 0.285714
-            for i in range(1, len(m2)-1):
+            for i in range(1, len(m2) - 1):
                 if m2[i] < ms:
                     j = i - 1
                     break
             else:
                 print("\nMassa error.")
                 continue
-            s1 = sc2[i-1]
+            s1 = sc2[i - 1]
             sc = int(((ms - m2[j]) / (m2[i] - m2[j]) * 10)) / 10
             break
         elif len(s1) == 2:
@@ -136,7 +136,7 @@ def define_own_star():
                 print("\nDie klasse is mij onbekend.")
                 continue
             j = 0
-            for i in range(len(sc2)-1):
+            for i in range(len(sc2) - 1):
                 if s1 == sc2[i]:
                     j = i
                     break
@@ -148,7 +148,7 @@ def define_own_star():
         else:
             print("<letter><cijfer> verwacht")
             continue
-    as1 = ms**-2.5 * 10
+    as1 = ms ** -2.5 * 10
     while True:
         print(f"\n{s} heeft een verwachte levensduur van ")
         print(f"{as1:.1f} miljard jaar ")
@@ -172,25 +172,25 @@ def define_own_star():
 
 def show_stellar_data(s, s1, sc, ms, l, as1, p):
     j = sc2.index(s1)
-    ts = 6000 * ms**0.35
+    ts = 6000 * ms ** 0.35
     clear_screen()
     print("** STELLAR DATA **\n")
-    print(f"De gekozen ster, {s} is een {s1}{ int(sc*10)} ster.")
+    print(f"De gekozen ster, {s} is een {s1}{int(sc * 10)} ster.")
     if sc > 0.75:
-        print(f"Ze is {c2[j+1]} van kleur,")
+        print(f"Ze is {c2[j + 1]} van kleur,")
     elif sc < 0.25:
         print(f"Ze is {c2[j]} van kleur,")
     else:
-        print(f"Ze heeft een kleur tussen {c2[j]} en {c2[j+1]}")
-    print(f"en haar massa is {ms+0.005:.2f} zonmassa's.")
+        print(f"Ze heeft een kleur tussen {c2[j]} en {c2[j + 1]}")
+    print(f"en haar massa is {ms + 0.005:.2f} zonmassa's.")
     print(f"Ze is {l:.2f} maal zo helder als de zon.")
     print(f"Haar verwachte levensduur is {as1:.2f} miljard jaar")
-    print(f"waarvan {p:.0f}% of ongeveer {(as1*p + 0.5) / 100:.2f}")
+    print(f"waarvan {p:.0f}% of ongeveer {(as1 * p + 0.5) / 100:.2f}")
     print("miljard jaar zijn verstreken.")
     if p > 95:
         print(f"{s} ligt op haar sterfbed.")
     print(f"Ze heeft een oppervlaktetemperatuur van {ts:.0f} Kelvin.")
-    if 2.5 < j+1 + sc < 7:
+    if 2.5 < j + 1 + sc < 7:
         print("Ze heeft mogelijk een planetenstelsel.")
     else:
         print("Ze heeft waarschijnlijk geen planetenstelsel.")
@@ -224,14 +224,14 @@ def planet_data(s, s1, sc, ms, l, as1, p):
         print("om stabiel te zijn.")
         _ = input("Druk op Enter")
         return False
-    pp = math.sqrt(rp**3 / ms)
+    pp = math.sqrt(rp ** 3 / ms)
     rm = math.sqrt(1 / 1.929)
     rx = math.sqrt(1 / 0.694)
-    ds = ms**0.3333
+    ds = ms ** 0.3333
     sa = ds / rp
     print("\nHoe groot moet de planeet zijn in verhouding")
     d = float(input("tot de aarde? "))
-    m = g * d**2
+    m = g * d ** 2
     if m < 0.055:
         print("Deze planeet zal geen zuurstofatmosfeer vasthouden.")
     if m > 17.6:
@@ -246,6 +246,39 @@ def planet_data(s, s1, sc, ms, l, as1, p):
     while t1 < 0 or t1 > 90:
         print("\nWat is de hoek van de rotatie-as (aarde =23.5 graden)?")
         t1 = float(input())
+
+    mcnt = int(input("\nHoeveel manen wenst u? "))
+    if mcnt > 10:
+        print("Voor het gemak beperken we dat tot 10.")
+        mcnt = 10
+    mm = 1000
+    h = 0
+    r = 56 * g
+    mn = []
+    mr = []
+    mp = []
+    if mcnt > 0:
+        for i in range(mcnt):
+            mn.append(float(input(f"\nMassa maan nr.{i + 1} (onze maan = 1)? ")))
+            while True:
+                tmp = float(input("\nBaanstraal (onze maan = 30)? "))
+                if tmp < 3 * g:
+                    print("Te dichtbij; ze zal in stukken breken.")
+                    continue
+                if tmp > 56 * g:
+                    print("Te ver weg; ze ontsnapt.")
+                    continue
+                break
+            mr.append(tmp)
+            mp.append(math.sqrt(tmp ** 3 / m) * 4)
+            if mr[i] < r:
+                mm = mp[i]
+                r = mr[i]
+            h = mn[i] * 0.01235 / (mr[i] ** 3) + h
+    h2 = 0.85 * d ** 4 / m * (ms * 333500 / (11759 * rp) ** 3 + h)
+    da = 1759260 * h2 * 14 + 10
+    if da > mm:
+        da = mm
 
     _ = input("Druk op Enter")
     return True
