@@ -264,9 +264,9 @@ def planet_data(s, s1, sc, ms, l, as1, p):
     mp = []
     if mcnt > 0:
         for i in range(mcnt):
-            mn.append(float(input(f"\nMassa maan nr.{i + 1} (onze maan = 1)? ")))
+            mn.append(float(input(f"Massa maan nr.{i + 1} (onze maan = 1)? ")))
             while True:
-                tmp = float(input("\nBaanstraal (onze maan = 30)? "))
+                tmp = float(input("Baanstraal (onze maan = 30)? "))
                 if tmp < 3 * g:
                     print("Te dichtbij; ze zal in stukken breken.")
                     continue
@@ -468,6 +468,88 @@ def planet_data(s, s1, sc, ms, l, as1, p):
     if hm == 0:
         print("on", end='')
     print("bewoonbaar vinden.")
+    _ = input("\nDruk op Enter")
+
+    clear_screen()
+    print("\n** ANDERE PLANETEN **")
+    print("\nHoeveel planeten moet het stelsel")
+    print(f"van {s} ", end='')
+    np = int(input("bevatten? "))
+    if np > 15:
+        print("We moeten dit beperken tot 15.")
+        np = 15
+    if np <= 1:
+        return
+    am = 1180 / math.sqrt(ms) - m * math.sqrt(rp)
+    rpl = [rp]
+    mp = [m]
+    for i in range(1, np):
+        clear_screen()
+        while True:
+            print("\nOns eigen zonnestelsel ziet er zo uit:")
+            print("\nplaneet     massa      baanstraal\n")
+            print("Mercurius     0.055     0.387")
+            print("Venus         0.815     0.723")
+            print("Aarde         1.0       1.0")
+            print("Mars          0.108     1.524")
+            print("Jupiter     317.9       5.203")
+            print("Saturnus     95.2       9.539")
+            print("Uranus       14.6      19.18")
+            print("Neptunus     17.2      30.06")
+            print("Pluto         0.100    39.44\n")
+            print("Massa in aardmassa's, afstand in")
+            print("astronmische eenheden.")
+            while True:
+                mpi = float(input(f"\nMassa planeet nr. {i + 1}? "))
+                if mpi < 1000:
+                    break
+                print("Een hemellichaam van deze afmetingen.")
+                print("wordt een ster.")
+            while True:
+                rpi = float(input("Baanstraal? "))
+                if rpi <= ms / 5:
+                    print("Te dicht bij de zon. De planeet zal")
+                    print("in stukken breken.")
+                    continue
+                if rpi >= 56 * ms:
+                    print("Te ver weg. De planeet zal aan het")
+                    print("stelsel ontsnappen.")
+                    continue
+                break
+            for k in range(0, i):
+                if 0.9 * rpi < rpl[k] < 1.1 * rpi:
+                    print("Deze planeet is te dicht bij andere")
+                    print("planeten om een stabiele baan te")
+                    print("hebben.")
+                    break
+            else:
+                a1 = mpi * math.sqrt(rpi)
+                if a1 >= am:
+                    print("Deze planeet heeft teveel massa om")
+                    print("in het stelsel te passen.")
+                    continue
+                am = am - a1
+                rpl.append(rpi)
+                mp.append(mpi)
+                break
+    for i in range(0, np):
+        f = False
+        for k in range(0, np - (i + 1)):
+            if rpl[k + 1] < rpl[k]:
+                rpl[k], rpl[k + 1] = rpl[k + 1], rpl[k]
+                mp[k], mp[k + 1] = mp[k + 1], mp[k]
+                f = True
+        if not f:
+            break
+    print("\n\nPlaneet nr.   massa   baanstraal\n")
+    rm = math.sqrt(1 / 1.929)
+    rx = math.sqrt(1 / 0.694)
+    for i in range(0, np):
+        print(f"  {i:2d}    {mp[i]:9.3f}   {rpl[i]:8.3f}  ", end='')
+        if rm < rpl[i] < rx and 0.055 < mp[i] < 17.6:
+            print("Leven?")
+        else:
+            print("")
 
     _ = input("\nDruk op Enter")
     return True
