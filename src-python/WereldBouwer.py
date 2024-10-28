@@ -306,10 +306,9 @@ def planet_data(s, s1, sc, ms, l, as1, p):
     print(f"'s Winters verwachten we een minium van {cnv(ll):.0f} graden C")
     if sh <= 32 or ll >= 175:
         print("Er zijn perioden waarin geen vloeibaar water kan bestaan.")
-    print("\nDruk op Enter voor")
-    _ = input("informatie over het manenstelsel.")
 
     if mcnt > 0:
+        _ = input("\nDruk op Enter voor informatie over het manenstelsel.")
         if mcnt > 1:
             for i in range(mcnt):
                 f = 0
@@ -326,7 +325,8 @@ def planet_data(s, s1, sc, ms, l, as1, p):
         print("\nbaanstraal  massa   periode\n")
         for i in range(mcnt):
             print(f"{mr[i]:7.1f} {mn[i]:8.2f} {mp[i] / da:9.2f} dagen")
-    _ = input("Druk op Enter")
+
+    _ = input("\nDruk op Enter")
 
     clear_screen()
     print("\n\n** PLANEET-GEGEVENS **\n")
@@ -371,7 +371,105 @@ def planet_data(s, s1, sc, ms, l, as1, p):
         print("Een zwaartekracht van {:.2f} g betekent".format(g))
         print("dat iemand van 80 kilo op deze")
         print("planeet {:.1f} kilo zou wegen.".format(g * 80))
-    _ = input("Druk op Enter")
+
+    _ = input("\nDruk op Enter voor informatie over leven")
+    clear_screen()
+    print("\n** LEVEN? **\n")
+    live = True
+    if m < 0.055 or m > 17.6:
+        print("Vanwege de slechte atmosfeer")
+        live = False
+    if rp < rm or rp > rx:
+        print("Vanwege de afstand tot de zon")
+        live = False
+    if sh < 32 or ll > 175:
+        print("Aangezien er nooit vloeibaar water is")
+        live = False
+    if as1 * p <= 1.5:
+        print("De planeet is te jong; er kan nog")
+        print("geen leven zijn ontstaan.")
+        live = False
+    if p >= 0.95:
+        print("Aangezien {} op haar".format(s))
+        print("sterbed ligt")
+        live = False
+    if live:
+        print("Mogelijk zijn er ", end='')
+        if as1 * p < 2 * g:
+            print("bacterien en")
+            print("blauwgroene algen.")
+        elif as1 * p < 3 * g:
+            print("eencelligen met")
+            print("een kern.")
+        elif as1 * p < 4 * g:
+            print("eenvoudige")
+            print("meercelligen.")
+        elif as1 * p <= 4.4 * g:
+            print("gewervelde")
+            print("waterdieren en planten op het land.")
+        else:
+            print("grote op het land")
+            print("levende dieren en misschien")
+            print("intelligente wezens.")
+            if g >= 1.05:
+                print("Grotere zwaartekracht betekent een")
+                print("dichtere atmosfeer die grote vogels")
+                print("kan dragen. Maar zelfs een kleine val")
+                print("is dodelijk, zodat hoge reactiesnel-")
+                print("heden noodzakelijk zijn. In het")
+                print("algemeen zullen levensvormen korter")
+                print("en steviger zijn dan op aarde.")
+                if g > 1.2:
+                    print("Er zijn geen tweebenige wezens")
+                    print("zoals wij.")
+                print("De dikke atmosfeer verbetert de")
+                print("geluidsoverdracht; daarom zullen")
+                print("dieren meer op hun gehoor vertrouwen")
+            if g < 0.95:
+                print("Kleiner zwaartekracht betekent een")
+                print("dunnere atmosfeer. Vogels, als ze")
+                print("al voorkomen, hebben grote vleugels.")
+                print("Alle levensvormen zullen hoger en")
+                print("slanker gebouwd zijn dan die op aarde.")
+                print("Tweebenige wezens kunnen zeker")
+                print("voorkomen.")
+                print("De dunne atmosfeer bemoeilijkt")
+                print("geluidsoverdracht, zodat de dieren")
+                print("grote of helemaal geen oren zullen")
+                print("hebben. Hun longen moeten groter zijn.")
+                if tp >= 75:
+                    print("Het leven moet zich op een of andere.")
+                print("manier beschermen tegen het zonlicht.")
+                if sa <= 0.75:
+                    print("Het leven moet zich op een of andere.")
+                    print("manier beschermen tegen het zonlicht.")
+            if sa < 0.75:
+                print("Vanwege de kleine zon zullen de")
+                print("dieren grote ogen hebben of op")
+                print("andere zintuigen vertrouwen")
+            if sa >= 1.5:
+                print("Tenzij de atmosfeer veel licht")
+                print("tegenhoudt, zullen de dieren")
+                print("kleine ogen hebben.")
+            if hi - lo >= 50:
+                print("Vanwege de grote temeratuurvariaties")
+                print("zal het leven zich vooral ondergronds")
+                print("en onder water bevinden.")
+            if (tp - 460) < 32 or (
+                    tp - 460) > 86 or g > 1.5 or g < 0.68 or m < 0.4 or m > 2.35 or da > 96 or sh > 120 or ll < -30 or hi > 110 or lo < -10:
+                hm = 0
+            else:
+                hm = 1
+    else:
+        print("zal op deze planeet waarschijnlijk.")
+        print("geen leven zijn.")
+    print("Mensen zullen deze wereld")
+    print("waarschijnlijk ", end='')
+    if hm == 0:
+        print("on", end='')
+    print("bewoonbaar vinden.")
+
+    _ = input("\nDruk op Enter")
     return True
 
 
