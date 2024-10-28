@@ -326,7 +326,51 @@ def planet_data(s, s1, sc, ms, l, as1, p):
         print("\nbaanstraal  massa   periode\n")
         for i in range(mcnt):
             print(f"{mr[i]:7.1f} {mn[i]:8.2f} {mp[i] / da:9.2f} dagen")
+    _ = input("Druk op Enter")
 
+    clear_screen()
+    print("\n\n** PLANEET-GEGEVENS **\n")
+    print("Deze planeet heeft een gemiddelde")
+    print(f"oppervlakte temperatuur van {cnv(tp - 460):.0f}")
+    print("graden C. Dit betekent een baanstraal")
+    print(f"van {rp:.2f} astronomische eenheden")
+    print(f"({rp * 150:.1f} miljoen km.).")
+    print(f"Perihelium = {ca:.2f} ae")
+    print(f"Aphelium = {fa:.2f} ae")
+    print(f"Een jaar is {pp:.2f} aardjaren lang.")
+    print(f"{s} lijkt ", end='')
+    if sa > 1.5 or sa < 0.75:
+        print("veel ", end='')
+    if sa > 1:
+        print("groter ", end='')
+    else:
+        print("kleiner ", end='')
+    print("dan onze zon.")
+    if 0.95 < g < 1.05:
+        print("De zwaartekracht is vrijwel gelijk")
+        print("aan die van de aarde.")
+    else:
+        print("Aangezien de zwaartekracht")
+        if g > 1:
+            print("groter is dan op aarde verwachten we")
+            print("een dichtere atmosfeer. De tektonische")
+            print("werking is groter, maar er is ook")
+            print("meer weerstand. We verwachten daarom")
+            print("meer continenten en kleinere bergen;")
+            print("Aardbevingen komen vaker voor en zijn")
+            print("heviger.")
+        else:
+            print("kleiner is dan op aarde verwachten we")
+            print("een dunnere atmosfeer. Er is minder")
+            print("tektonische werking en ook de")
+            print("weerstand is kleiner. We verwachten")
+            print("daarom minder bergen, maar ze kunnen")
+            print("veel hoger worden.")
+            print("Aardbevingen, als ze al voorkomen,")
+            print("zullen minder hevig zijn.")
+        print("Een zwaartekracht van {:.2f} g betekent".format(g))
+        print("dat iemand van 80 kilo op deze")
+        print("planeet {:.1f} kilo zou wegen.".format(g * 80))
     _ = input("Druk op Enter")
     return True
 
