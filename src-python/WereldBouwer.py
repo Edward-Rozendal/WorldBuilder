@@ -8,16 +8,21 @@ This version is based on the Dutch translation made by Steven Bolt and Carl Kopp
 and published in January 1984 in the monthly magazine [KIJK](https://www.kijkmagazine.nl/).
 """
 import math
-from os import system, name
+import os
+
+
+class Star:
+    def __init__(self, name):
+        self.name = name
 
 
 def clear_screen():
-    if name == 'nt':
+    if os.name == 'nt':
         # for windows
-        system('cls')
+        os.system('cls')
     else:
         # for mac and linux (here, os.name is 'posix')
-        system('clear')
+        os.system('clear')
 
 
 def title_screen():
@@ -101,12 +106,13 @@ def select_known_star():
     p = (1.25 - ms / pow(l, 0.285714)) / 0.005
     if (p / 100 * as1) > 10:
         p = 1000 / as1
-    show_stellar_data(s, s1, sc, ms, l, as1, p)
+    star = Star(s)
+    show_stellar_data(star, s1, sc, ms, l, as1, p)
     a = input("\nWilt u een andere ster? ")
     if len(a) > 0 and a[0].lower() in ('j', 'y'):
         return
     while True:
-        if planet_data(s, s1, sc, ms, l, as1, p):
+        if planet_data(star, s1, sc, ms, l, as1, p):
             break
 
 
@@ -166,21 +172,22 @@ def define_own_star():
             break
     ms = ms * (1.25 - 0.005 * p)
     l = ms ** 3.5
-    show_stellar_data(s, s1, sc, ms, l, as1, p)
+    star = Star(s)
+    show_stellar_data(star, s1, sc, ms, l, as1, p)
     a = input("\nWilt u een andere ster? ")
     if len(a) > 0 and a[0].lower() in ('j', 'y'):
         return
     while True:
-        if planet_data(s, s1, sc, ms, l, as1, p):
+        if planet_data(star, s1, sc, ms, l, as1, p):
             break
 
 
-def show_stellar_data(s, s1, sc, ms, l, as1, p):
+def show_stellar_data(star, s1, sc, ms, l, as1, p):
     j = sc2.index(s1)
     ts = 6000 * ms ** 0.35
     clear_screen()
     print("** STELLAR DATA **\n")
-    print(f"De gekozen ster, {s} is een {s1}{int(sc * 10)} ster.")
+    print(f"De gekozen ster, {star.name} is een {s1}{int(sc * 10)} ster.")
     if sc > 0.75:
         print(f"Ze is {c2[j + 1]} van kleur,")
     elif sc < 0.25:
@@ -193,13 +200,13 @@ def show_stellar_data(s, s1, sc, ms, l, as1, p):
     print(f"waarvan {p:.0f}% of ongeveer {(as1 * p + 0.5) / 100:.2f}")
     print("miljard jaar zijn verstreken.")
     if p > 95:
-        print(f"{s} ligt op haar sterfbed.")
+        print(f"{star.name} ligt op haar sterfbed.")
     print(f"Ze heeft een oppervlaktetemperatuur van {ts:.0f} Kelvin.")
     if 2.5 < j + 1 + sc < 7:
         print("Ze heeft mogelijk een planetenstelsel.")
     else:
         print("Ze heeft waarschijnlijk geen planetenstelsel.")
-    print(f"{s} zal sterven als een")
+    print(f"{star.name} zal sterven als een")
     if ms < 1.5:
         print("witte dwerg.")
     elif ms < 10:
@@ -208,7 +215,7 @@ def show_stellar_data(s, s1, sc, ms, l, as1, p):
         print("zwart gat na een supernova-explosie.")
 
 
-def planet_data(s, s1, sc, ms, l, as1, p):
+def planet_data(star, s1, sc, ms, l, as1, p):
     hm = 0
     p = p / 100
     clear_screen()
@@ -338,7 +345,7 @@ def planet_data(s, s1, sc, ms, l, as1, p):
     print(f"Perihelium = {ca:.2f} ae")
     print(f"Aphelium = {fa:.2f} ae")
     print(f"Een jaar is {pp:.2f} aardjaren lang.")
-    print(f"{s} lijkt ", end='')
+    print(f"{star.name} lijkt ", end='')
     if sa > 1.5 or sa < 0.75:
         print("veel ", end='')
     if sa > 1:
@@ -390,7 +397,7 @@ def planet_data(s, s1, sc, ms, l, as1, p):
         print("geen leven zijn ontstaan.")
         live = False
     if p >= 0.95:
-        print("Aangezien {} op haar".format(s))
+        print(f"Aangezien {star.name} op haar")
         print("sterbed ligt")
         live = False
     if live:
@@ -473,13 +480,13 @@ def planet_data(s, s1, sc, ms, l, as1, p):
     clear_screen()
     print("\n** ANDERE PLANETEN **")
     print("\nHoeveel planeten moet het stelsel")
-    print(f"van {s} ", end='')
+    print(f"van {star.name} ", end='')
     np = int(input("bevatten? "))
     if np > 15:
         print("We moeten dit beperken tot 15.")
         np = 15
     if np <= 1:
-        return
+        return True
     am = 1180 / math.sqrt(ms) - m * math.sqrt(rp)
     rpl = [rp]
     mp = [m]
