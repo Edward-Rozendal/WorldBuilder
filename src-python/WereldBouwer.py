@@ -107,23 +107,18 @@ def select_known_star():
     star = Star(s)
     star.spectral_type = ss2[sk][0]
     star.spectral_fraction = int(ss2[sk][1]) / 10
-    ms = sm2[sk]
-    l = ls2[sk]
-    as1 = pow(ms, -2.5) * 10
-    p = (1.25 - ms / pow(l, 0.285714)) / 0.005
-    if (p / 100 * as1) > 10:
-        p = 1000 / as1
-    star.mass = ms
-    star.luminosity = l
-    star.lifespan = as1
+    star.mass = sm2[sk]
+    star.luminosity = ls2[sk]
+    star.lifespan = pow(star.mass, -2.5) * 10
+    p = (1.25 - star.mass / pow(star.luminosity, 0.285714)) / 0.005
+    if (p / 100 * star.lifespan) > 10:
+        p = 1000 / star.lifespan
     star.life_fraction = p / 100
     show_stellar_data(star)
     a = input("\nWilt u een andere ster? ")
     if len(a) > 0 and a[0].lower() in ('j', 'y'):
         return
-    while True:
-        if planet_data(star):
-            break
+    return star
 
 
 def define_own_star():
@@ -193,9 +188,7 @@ def define_own_star():
     a = input("\nWilt u een andere ster? ")
     if len(a) > 0 and a[0].lower() in ('j', 'y'):
         return
-    while True:
-        if planet_data(star):
-            break
+    return star
 
 
 def show_stellar_data(star):
@@ -582,10 +575,19 @@ if __name__ == '__main__':
     init_data()
     a = '0'
     while a != '4':
+        star = None
         a = menu_screen()
         if a == '2':
-            define_own_star()
+            star = define_own_star()
         if a == '3':
             list_stars()
         if a == '1' or a == '3':
-            select_known_star()
+            star = select_known_star()
+        if a != '4':
+            if star is None:
+                continue
+            while True:
+                if planet_data(star):
+                    break
+
+
