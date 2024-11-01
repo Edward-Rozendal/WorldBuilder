@@ -14,6 +14,10 @@ import os
 class Star:
     def __init__(self, name):
         self.name = name
+        self.mass = 0  # Sol masses
+        self.luminosity = 0  # Relative to sol luminosity
+        self.lifespan = 0  # Billion years
+        self.life_fraction = 0  # 0.00 - 1.00
 
 
 def clear_screen():
@@ -107,12 +111,16 @@ def select_known_star():
     if (p / 100 * as1) > 10:
         p = 1000 / as1
     star = Star(s)
-    show_stellar_data(star, s1, sc, ms, l, as1, p)
+    star.mass = ms
+    star.luminosity = l
+    star.lifespan = as1
+    star.life_fraction = p / 100
+    show_stellar_data(star, s1, sc)
     a = input("\nWilt u een andere ster? ")
     if len(a) > 0 and a[0].lower() in ('j', 'y'):
         return
     while True:
-        if planet_data(star, s1, sc, ms, l, as1, p):
+        if planet_data(star, s1, sc):
             break
 
 
@@ -173,18 +181,22 @@ def define_own_star():
     ms = ms * (1.25 - 0.005 * p)
     l = ms ** 3.5
     star = Star(s)
-    show_stellar_data(star, s1, sc, ms, l, as1, p)
+    star.mass = ms
+    star.luminosity = l
+    star.lifespan = as1
+    star.life_fraction = p / 100
+    show_stellar_data(star, s1, sc)
     a = input("\nWilt u een andere ster? ")
     if len(a) > 0 and a[0].lower() in ('j', 'y'):
         return
     while True:
-        if planet_data(star, s1, sc, ms, l, as1, p):
+        if planet_data(star, s1, sc):
             break
 
 
-def show_stellar_data(star, s1, sc, ms, l, as1, p):
+def show_stellar_data(star, s1, sc):
     j = sc2.index(s1)
-    ts = 6000 * ms ** 0.35
+    ts = 6000 * star.mass ** 0.35
     clear_screen()
     print("** STELLAR DATA **\n")
     print(f"De gekozen ster, {star.name} is een {s1}{int(sc * 10)} ster.")
@@ -194,12 +206,12 @@ def show_stellar_data(star, s1, sc, ms, l, as1, p):
         print(f"Ze is {c2[j]} van kleur,")
     else:
         print(f"Ze heeft een kleur tussen {c2[j]} en {c2[j + 1]}")
-    print(f"en haar massa is {ms + 0.005:.2f} zonmassa's.")
-    print(f"Ze is {l:.2f} maal zo helder als de zon.")
-    print(f"Haar verwachte levensduur is {as1:.2f} miljard jaar")
-    print(f"waarvan {p:.0f}% of ongeveer {(as1 * p + 0.5) / 100:.2f}")
+    print(f"en haar massa is {star.mass + 0.005:.2f} zonmassa's.")
+    print(f"Ze is {star.luminosity:.2f} maal zo helder als de zon.")
+    print(f"Haar verwachte levensduur is {star.lifespan:.2f} miljard jaar")
+    print(f"waarvan {star.life_fraction * 100:.0f}% of ongeveer {star.lifespan * star.life_fraction:.2f}")
     print("miljard jaar zijn verstreken.")
-    if p > 95:
+    if star.life_fraction > 95:
         print(f"{star.name} ligt op haar sterfbed.")
     print(f"Ze heeft een oppervlaktetemperatuur van {ts:.0f} Kelvin.")
     if 2.5 < j + 1 + sc < 7:
@@ -207,17 +219,16 @@ def show_stellar_data(star, s1, sc, ms, l, as1, p):
     else:
         print("Ze heeft waarschijnlijk geen planetenstelsel.")
     print(f"{star.name} zal sterven als een")
-    if ms < 1.5:
+    if star.mass < 1.5:
         print("witte dwerg.")
-    elif ms < 10:
+    elif star.mass < 10:
         print("neutronster na een supernove-explosie.")
     else:
         print("zwart gat na een supernova-explosie.")
 
 
-def planet_data(star, s1, sc, ms, l, as1, p):
+def planet_data(star, s1, scp):
     hm = 0
-    p = p / 100
     clear_screen()
     print("\n** PLANEET-GEGEVENS **\n")
     print("De aarde heeft een gemiddelde oppervlakte")
@@ -230,16 +241,16 @@ def planet_data(star, s1, sc, ms, l, as1, p):
         g = float(input("(aarde=1)? "))
         if g <= 0:
             print("Enige zwaartekracht is noodzakelijk.")
-    rp = math.sqrt(l / (tp / 520) ** 4)
-    if rp <= ms / 5:
+    rp = math.sqrt(star.luminosity / (tp / 520) ** 4)
+    if rp <= star.mass / 5:
         print("\nDeze planeet bevindt zich te dicht bij haar zon")
         print("om stabiel te zijn.")
         _ = input("Druk op Enter")
         return False
-    pp = math.sqrt(rp ** 3 / ms)
+    pp = math.sqrt(rp ** 3 / star.mass)
     rm = math.sqrt(1 / 1.929)
     rx = math.sqrt(1 / 0.694)
-    ds = ms ** 0.3333
+    ds = star.mass ** 0.3333
     sa = ds / rp
     print("\nHoe groot moet de planeet zijn in verhouding")
     d = float(input("tot de aarde? "))
@@ -287,7 +298,7 @@ def planet_data(star, s1, sc, ms, l, as1, p):
                 mm = mp[i]
                 r = mr[i]
             h = mn[i] * 0.01235 / (mr[i] ** 3) + h
-    h2 = 0.85 * d ** 4 / m * (ms * 333500 / (11759 * rp) ** 3 + h)
+    h2 = 0.85 * d ** 4 / m * (star.mass * 333500 / (11759 * rp) ** 3 + h)
     da = 1759260 * h2 * 14 + 10
     if da > mm:
         da = mm
@@ -392,26 +403,26 @@ def planet_data(star, s1, sc, ms, l, as1, p):
     if sh < 32 or ll > 175:
         print("Aangezien er nooit vloeibaar water is")
         live = False
-    if as1 * p <= 1.5:
+    if star.lifespan * star.life_fraction <= 1.5:
         print("De planeet is te jong; er kan nog")
         print("geen leven zijn ontstaan.")
         live = False
-    if p >= 0.95:
+    if star.life_fraction >= 0.95:
         print(f"Aangezien {star.name} op haar")
         print("sterbed ligt")
         live = False
     if live:
         print("Mogelijk zijn er ", end='')
-        if as1 * p < 2 * g:
+        if star.lifespan * star.life_fraction < 2 * g:
             print("bacterien en")
             print("blauwgroene algen.")
-        elif as1 * p < 3 * g:
+        elif star.lifespan * star.life_fraction < 3 * g:
             print("eencelligen met")
             print("een kern.")
-        elif as1 * p < 4 * g:
+        elif star.lifespan * star.life_fraction < 4 * g:
             print("eenvoudige")
             print("meercelligen.")
-        elif as1 * p <= 4.4 * g:
+        elif star.lifespan * star.life_fraction <= 4.4 * g:
             print("gewervelde")
             print("waterdieren en planten op het land.")
         else:
@@ -487,7 +498,7 @@ def planet_data(star, s1, sc, ms, l, as1, p):
         np = 15
     if np <= 1:
         return True
-    am = 1180 / math.sqrt(ms) - m * math.sqrt(rp)
+    am = 1180 / math.sqrt(star.mass) - m * math.sqrt(rp)
     rpl = [rp]
     mp = [m]
     for i in range(1, np):
@@ -514,11 +525,11 @@ def planet_data(star, s1, sc, ms, l, as1, p):
                 print("wordt een ster.")
             while True:
                 rpi = float(input("Baanstraal? "))
-                if rpi <= ms / 5:
+                if rpi <= star.mass / 5:
                     print("Te dicht bij de zon. De planeet zal")
                     print("in stukken breken.")
                     continue
-                if rpi >= 56 * ms:
+                if rpi >= 56 * star.mass:
                     print("Te ver weg. De planeet zal aan het")
                     print("stelsel ontsnappen.")
                     continue
