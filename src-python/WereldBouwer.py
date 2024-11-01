@@ -14,6 +14,8 @@ import os
 class Star:
     def __init__(self, name):
         self.name = name
+        self.spectral_type = 'G'  # Letter of star classification
+        self.spectral_fraction = 0.1  # Subdivision 0.1 ... 0.9
         self.mass = 0  # Sol masses
         self.luminosity = 0  # Relative to sol luminosity
         self.lifespan = 0  # Billion years
@@ -102,25 +104,25 @@ def select_known_star():
     except ValueError:
         _ = input("Die ster is mij niet bekend.")
         return
-    sc = int(ss2[sk][1]) / 10
-    s1 = ss2[sk][0]
+    star = Star(s)
+    star.spectral_type = ss2[sk][0]
+    star.spectral_fraction = int(ss2[sk][1]) / 10
     ms = sm2[sk]
     l = ls2[sk]
     as1 = pow(ms, -2.5) * 10
     p = (1.25 - ms / pow(l, 0.285714)) / 0.005
     if (p / 100 * as1) > 10:
         p = 1000 / as1
-    star = Star(s)
     star.mass = ms
     star.luminosity = l
     star.lifespan = as1
     star.life_fraction = p / 100
-    show_stellar_data(star, s1, sc)
+    show_stellar_data(star)
     a = input("\nWilt u een andere ster? ")
     if len(a) > 0 and a[0].lower() in ('j', 'y'):
         return
     while True:
-        if planet_data(star, s1, sc):
+        if planet_data(star):
             break
 
 
@@ -181,28 +183,30 @@ def define_own_star():
     ms = ms * (1.25 - 0.005 * p)
     l = ms ** 3.5
     star = Star(s)
+    star.spectral_type = s1
+    star.spectral_fraction = sc
     star.mass = ms
     star.luminosity = l
     star.lifespan = as1
     star.life_fraction = p / 100
-    show_stellar_data(star, s1, sc)
+    show_stellar_data(star)
     a = input("\nWilt u een andere ster? ")
     if len(a) > 0 and a[0].lower() in ('j', 'y'):
         return
     while True:
-        if planet_data(star, s1, sc):
+        if planet_data(star):
             break
 
 
-def show_stellar_data(star, s1, sc):
-    j = sc2.index(s1)
+def show_stellar_data(star):
+    j = sc2.index(star.spectral_type)
     ts = 6000 * star.mass ** 0.35
     clear_screen()
     print("** STELLAR DATA **\n")
-    print(f"De gekozen ster, {star.name} is een {s1}{int(sc * 10)} ster.")
-    if sc > 0.75:
+    print(f"De gekozen ster, {star.name} is een {star.spectral_type}{int(star.spectral_fraction * 10)} ster.")
+    if star.spectral_fraction > 0.75:
         print(f"Ze is {c2[j + 1]} van kleur,")
-    elif sc < 0.25:
+    elif star.spectral_fraction < 0.25:
         print(f"Ze is {c2[j]} van kleur,")
     else:
         print(f"Ze heeft een kleur tussen {c2[j]} en {c2[j + 1]}")
@@ -214,7 +218,7 @@ def show_stellar_data(star, s1, sc):
     if star.life_fraction > 95:
         print(f"{star.name} ligt op haar sterfbed.")
     print(f"Ze heeft een oppervlaktetemperatuur van {ts:.0f} Kelvin.")
-    if 2.5 < j + 1 + sc < 7:
+    if 2.5 < j + 1 + star.spectral_fraction < 7:
         print("Ze heeft mogelijk een planetenstelsel.")
     else:
         print("Ze heeft waarschijnlijk geen planetenstelsel.")
@@ -227,7 +231,7 @@ def show_stellar_data(star, s1, sc):
         print("zwart gat na een supernova-explosie.")
 
 
-def planet_data(star, s1, scp):
+def planet_data(star):
     hm = 0
     clear_screen()
     print("\n** PLANEET-GEGEVENS **\n")
