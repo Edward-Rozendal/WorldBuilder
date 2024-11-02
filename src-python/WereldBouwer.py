@@ -31,6 +31,16 @@ def clear_screen():
         os.system('clear')
 
 
+def confirm(question):
+    while True:
+        answer = input(question)
+        if len(answer) > 0:
+            if answer[0].lower() in ('j', 'y'):
+                return True
+            if answer[0].lower() == 'n':
+                return False
+
+
 def title_screen():
     clear_screen()
     print("\n** WERELD BOUWER **\n")
@@ -115,8 +125,7 @@ def select_known_star():
         p = 1000 / star.lifespan
     star.life_fraction = p / 100
     show_stellar_data(star)
-    a = input("\nWilt u een andere ster? ")
-    if len(a) > 0 and a[0].lower() in ('j', 'y'):
+    if confirm("\nWilt u een andere ster? "):
         return
     return star
 
@@ -172,8 +181,7 @@ def define_own_star():
         if p / 100 * as1 < 18:
             break
         print("\nHet universum is circa 18 miljard jaar oud.")
-        a = input("\nWilt u een ander percentage? ")
-        if len(a) == 0 or a[0].lower() not in ('j', 'y'):
+        if confirm("\nWilt u een ander percentage? "):
             break
     ms = ms * (1.25 - 0.005 * p)
     l = ms ** 3.5
@@ -185,8 +193,7 @@ def define_own_star():
     star.lifespan = as1
     star.life_fraction = p / 100
     show_stellar_data(star)
-    a = input("\nWilt u een andere ster? ")
-    if len(a) > 0 and a[0].lower() in ('j', 'y'):
+    if confirm("\nWilt u een andere ster? "):
         return
     return star
 
@@ -589,5 +596,3 @@ if __name__ == '__main__':
             while True:
                 if planet_data(star):
                     break
-
-
