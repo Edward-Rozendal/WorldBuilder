@@ -31,6 +31,18 @@ def clear_screen():
         os.system('clear')
 
 
+def format_print(ident, width, lines):
+    for line in lines:
+        while True:
+            print(' ' * ident, end='')
+            if len(line) < width:
+                print(line)
+                break
+            pos = line[:width + 1].rfind(' ')
+            print(line[:pos])
+            line = line[pos+1:]
+
+
 def confirm(question):
     while True:
         answer = input(question)
@@ -43,11 +55,15 @@ def confirm(question):
 
 def title_screen():
     clear_screen()
-    print("\n** WERELD BOUWER **\n")
-    print("door Stephen Kimmel")
-    print("een programma voor")
-    print("de bouw van vreemde")
-    print("nieuwe werelden....", end='')
+    format_print(10, 50, [
+        "\n\n",
+        "** WERELD BOUWER **\n",
+        "door Stephen Kimmel",
+        "een programma voor",
+        "de bouw van vreemde",
+        "nieuwe werelden....\n",
+        "(Druk op Enter)"
+    ])
     _ = input()
 
 
@@ -86,13 +102,16 @@ def init_data():
 
 def menu_screen():
     clear_screen()
-    print("\n&& WERELD BOUWER &&\n")
-    print("tik het nr. van de gewenste operatie\n")
-    print("1) gebruik een bekende ster")
-    print("2) gebruik een andere ster")
-    print("3) druk een lijst van bekende sterren")
-    print("4) stop\n")
-    return input("Uw keus: ")
+    format_print(10, 50, [
+        "\n\n",
+        "      && WERELD BOUWER &&\n",
+        "tik het nr. van de gewenste operatie\n",
+        "1) gebruik een bekende ster",
+        "2) gebruik een andere ster",
+        "3) druk een lijst van bekende sterren",
+        "4) stop\n"
+    ])
+    return input("          Uw keus: ")
 
 
 def list_stars():
