@@ -9,13 +9,13 @@ and published in January 1984 in the monthly magazine [KIJK](https://www.kijkmag
 """
 import math
 import os
+from spectral_type import SpectralType, InvalidSpectralType
 
 
 class Star:
     def __init__(self, name):
         self.name = name
-        self.spectral_type = 'G'  # Letter of star classification
-        self.spectral_fraction = 0.1  # Subdivision 0.1 ... 0.9
+        self.spectral_type = None
         self.mass = 0  # Sol masses
         self.luminosity = 0  # Relative to sol luminosity
         self.lifespan = 0  # Billion years
@@ -55,10 +55,6 @@ def cnv(z):
     """ Convert degrees fahrenheit to degrees celsius"""
     return ((z - 32) / 0.18 + 0.5) / 10
 
-
-sc2 = ["o", "b", "a", "f", "g", "k", "m", "d"]
-m2 = [100, 17, 3.2, 1.54, 1.02, 0.75, 0.38, 0.0]
-c2 = ["blauw", "licht blauw", "wit", "licht geel", "geel", "oranje", "rood", "rood"]
 
 s2 = ["sol", "alpha centauri a", "alpha centauri b", "epsilon eridani", "tau ceti",
       "70 ophiuchi a", "70 ophiuchi b", "eta cassiopeiae a", "eta cassiopeiae b",
@@ -115,8 +111,7 @@ def select_known_star():
         _ = input("Die ster is mij niet bekend.")
         return
     star = Star(s)
-    star.spectral_type = ss2[sk][0]
-    star.spectral_fraction = int(ss2[sk][1]) / 10
+    star.spectral_type = SpectralType(ss2[sk])
     star.mass = sm2[sk]
     star.luminosity = ls2[sk]
     star.lifespan = pow(star.mass, -2.5) * 10
@@ -133,8 +128,8 @@ def select_known_star():
 def define_own_star():
     clear_screen()
     s = input("Hoe heet de ster? ")
-    sc = 0
-    ms = 0.0
+    star = Star(s)
+    mass = 0.0
     l = 0.0
     p = 0
     while True:
@@ -142,38 +137,21 @@ def define_own_star():
         if len(s1) == 0 or s1[0] in ('/', '?'):
             m = float(input("\nAbsolute magnitude ( zon=4.85 )? "))
             l = 2.512 ** (4.85 - m)
-            ms = l ** 0.285714
-            for i in range(1, len(m2) - 1):
-                if m2[i] < ms:
-                    j = i - 1
-                    break
-            else:
-                print("\nMassa error.")
-                continue
-            s1 = sc2[i - 1]
-            sc = int(((ms - m2[j]) / (m2[i] - m2[j]) * 10)) / 10
+            mass = l ** 0.285714
+            star.spectral_type = SpectralType.type_from_mass(mass)
             break
         elif len(s1) == 2:
             try:
-                sc = int(s1[1]) / 10
-                s1 = s1[0].lower()
-            except ValueError:
+                star.spectral_type = SpectralType(s1)
+            except InvalidSpectralType:
                 print("\nDie klasse is mij onbekend.")
                 continue
-            j = 0
-            for i in range(len(sc2) - 1):
-                if s1 == sc2[i]:
-                    j = i
-                    break
-            else:
-                print("\nDie klasse is mij onbekend.")
-                continue
-            ms = m2[j] - sc * (m2[j] - m2[j + 1])
+            mass = star.spectral_type.mass()
             break
         else:
             print("<letter><cijfer> verwacht")
             continue
-    as1 = ms ** -2.5 * 10
+    as1 = mass ** -2.5 * 10
     while True:
         print(f"\n{s} heeft een verwachte levensduur van ")
         print(f"{as1:.1f} miljard jaar ")
@@ -183,12 +161,9 @@ def define_own_star():
         print("\nHet universum is circa 18 miljard jaar oud.")
         if confirm("\nWilt u een ander percentage? "):
             break
-    ms = ms * (1.25 - 0.005 * p)
-    l = ms ** 3.5
-    star = Star(s)
-    star.spectral_type = s1
-    star.spectral_fraction = sc
-    star.mass = ms
+    mass = mass * (1.25 - 0.005 * p)
+    l = mass ** 3.5
+    star.mass = mass
     star.luminosity = l
     star.lifespan = as1
     star.life_fraction = p / 100
@@ -199,17 +174,15 @@ def define_own_star():
 
 
 def show_stellar_data(star):
-    j = sc2.index(star.spectral_type)
     ts = 6000 * star.mass ** 0.35
     clear_screen()
     print("** STELLAR DATA **\n")
-    print(f"De gekozen ster, {star.name} is een {star.spectral_type}{int(star.spectral_fraction * 10)} ster.")
-    if star.spectral_fraction > 0.75:
-        print(f"Ze is {c2[j + 1]} van kleur,")
-    elif star.spectral_fraction < 0.25:
-        print(f"Ze is {c2[j]} van kleur,")
+    print(f"De gekozen ster, {star.name} is een {star.spectral_type.spectral_type} ster.")
+    color = star.spectral_type.kleur()
+    if len(color) == 2:
+        print(f"Ze heeft een kleur tussen {color[0]} en {color[1]}")
     else:
-        print(f"Ze heeft een kleur tussen {c2[j]} en {c2[j + 1]}")
+        print(f"Ze is {color[0]} van kleur,")
     print(f"en haar massa is {star.mass + 0.005:.2f} zonmassa's.")
     print(f"Ze is {star.luminosity:.2f} maal zo helder als de zon.")
     print(f"Haar verwachte levensduur is {star.lifespan:.2f} miljard jaar")
@@ -218,7 +191,8 @@ def show_stellar_data(star):
     if star.life_fraction > 95:
         print(f"{star.name} ligt op haar sterfbed.")
     print(f"Ze heeft een oppervlaktetemperatuur van {ts:.0f} Kelvin.")
-    if 2.5 < j + 1 + star.spectral_fraction < 7:
+    j = SpectralType.class_letters.index(star.spectral_type.spectral_class)
+    if 2.5 < j + 1 + star.spectral_type.class_subdivision / 10 < 7:
         print("Ze heeft mogelijk een planetenstelsel.")
     else:
         print("Ze heeft waarschijnlijk geen planetenstelsel.")
