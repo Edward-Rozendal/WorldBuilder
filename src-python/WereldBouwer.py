@@ -10,16 +10,7 @@ and published in January 1984 in the monthly magazine [KIJK](https://www.kijkmag
 import math
 import os
 from spectral_type import SpectralType, InvalidSpectralType
-
-
-class Star:
-    def __init__(self, name):
-        self.name = name
-        self.spectral_type = None
-        self.mass = 0  # Sol masses
-        self.luminosity = 0  # Relative to sol luminosity
-        self.lifespan = 0  # Billion years
-        self.life_fraction = 0  # 0.00 - 1.00
+from star import Star
 
 
 def clear_screen():
@@ -193,35 +184,12 @@ def define_own_star():
 
 
 def show_stellar_data(star):
-    ts = 6000 * star.mass ** 0.35
     clear_screen()
-    print("** STELLAR DATA **\n")
-    print(f"De gekozen ster, {star.name} is een {star.spectral_type.spectral_type} ster.")
-    color = star.spectral_type.kleur()
-    if len(color) == 2:
-        print(f"Ze heeft een kleur tussen {color[0]} en {color[1]}")
-    else:
-        print(f"Ze is {color[0]} van kleur,")
-    print(f"en haar massa is {star.mass + 0.005:.2f} zonmassa's.")
-    print(f"Ze is {star.luminosity:.2f} maal zo helder als de zon.")
-    print(f"Haar verwachte levensduur is {star.lifespan:.2f} miljard jaar")
-    print(f"waarvan {star.life_fraction * 100:.0f}% of ongeveer {star.lifespan * star.life_fraction:.2f}")
-    print("miljard jaar zijn verstreken.")
-    if star.life_fraction > 95:
-        print(f"{star.name} ligt op haar sterfbed.")
-    print(f"Ze heeft een oppervlaktetemperatuur van {ts:.0f} Kelvin.")
-    j = SpectralType.class_letters.index(star.spectral_type.spectral_class)
-    if 2.5 < j + 1 + star.spectral_type.class_subdivision / 10 < 7:
-        print("Ze heeft mogelijk een planetenstelsel.")
-    else:
-        print("Ze heeft waarschijnlijk geen planetenstelsel.")
-    print(f"{star.name} zal sterven als een")
-    if star.mass < 1.5:
-        print("witte dwerg.")
-    elif star.mass < 10:
-        print("neutronster na een supernove-explosie.")
-    else:
-        print("zwart gat na een supernova-explosie.")
+    format_print(10, 50, [
+        "\n\n",
+        "** STELLAR DATA **\n"
+    ])
+    format_print(10, 50, star.description())
 
 
 def planet_data(star):
