@@ -12,6 +12,7 @@ import os
 from spectral_type import SpectralType, InvalidSpectralType
 from star import Star
 from star_db import star_list, get_star
+from planet import Planet
 
 
 def clear_screen():
@@ -157,12 +158,14 @@ def show_stellar_data(star):
 
 
 def planet_data(star):
+    planet = Planet(star)
     hm = 0
     clear_screen()
     print("\n** PLANEET-GEGEVENS **\n")
     print("De aarde heeft een gemiddelde oppervlakte")
     print("temperatuur van 16 graden Celsius.")
     tp = int(input("Welke temperatuur wenst u? "))
+    planet.set_temperature(tp)
     tp = 1.8 * tp + 492
     g = -1.0
     while g <= 0:
@@ -170,12 +173,14 @@ def planet_data(star):
         g = float(input("(aarde=1)? "))
         if g <= 0:
             print("Enige zwaartekracht is noodzakelijk.")
+    planet.set_gravity(g)
     rp = math.sqrt(star.luminosity / (tp / 520) ** 4)
     if rp <= star.mass / 5:
         print("\nDeze planeet bevindt zich te dicht bij haar zon")
         print("om stabiel te zijn.")
         _ = input("Druk op Enter")
         return False
+    planet.set_radius(rp)
     pp = math.sqrt(rp ** 3 / star.mass)
     rm = math.sqrt(1 / 1.929)
     rx = math.sqrt(1 / 0.694)
@@ -184,6 +189,7 @@ def planet_data(star):
     print("\nHoe groot moet de planeet zijn in verhouding")
     d = float(input("tot de aarde? "))
     m = g * d ** 2
+    planet.set_mass(m)
     if m < 0.055:
         print("Deze planeet zal geen zuurstofatmosfeer vasthouden.")
     if m > 17.6:
@@ -192,12 +198,14 @@ def planet_data(star):
     while ec > 1:
         print("\nDe baan van de aarde heeft een excentriciteit")
         ec = float(input("van 0.01672 Gewenste excentriciteit (<1)? "))
+    planet.set_eccentricity(ec)
     ca = (1 - ec) * rp
     fa = (1 + ec) * rp
     t1 = 100
     while t1 < 0 or t1 > 90:
         print("\nWat is de hoek van de rotatie-as (aarde =23.5 graden)?")
         t1 = float(input())
+    planet.set_angle(t1)
 
     mcnt = int(input("\nHoeveel manen wenst u? "))
     if mcnt > 10:
@@ -231,28 +239,14 @@ def planet_data(star):
     da = 1759260 * h2 * 14 + 10
     if da > mm:
         da = mm
+    planet.set_day_length(da)
 
     clear_screen()
-    print("\n\n** PLANEET-GEGEVENS **")
-    print(f"\nEen dag duurt op deze planeet ongeveer {da:.2f} uur")
-    yd = int(87660 / da * pp + .5) / 10
-    print(f"Een jaar duurt {yd:.1f} dagen")
-    print("De hoek van de rotatie-as heeft de volgende")
-    print("invloeden op het klimaat:")
-    hi = (1 + 0.025 * da / 24) * tp - 460
-    lo = (1 - 0.025 * da / 24) * tp - 460
-    if lo < -460:
-        lo = -460
-    print(f"De maximumtemperatuur is vandaag {cnv(hi):.0f} graden C")
-    print(f"Vannacht zal de temperatuur dalen tot {cnv(lo):.0f} graden C")
-    sh = hi + 1.9 * t1 * (1 + ec) ** 2
-    ll = lo - 1.9 * t1 / (1 + ec) ** 2
-    if ll < -460:
-        ll = -460
-    print(f"'s Zomers kan de temperatuur stijgen tot {cnv(sh):.0f} graden C")
-    print(f"'s Winters verwachten we een minium van {cnv(ll):.0f} graden C")
-    if sh <= 32 or ll >= 175:
-        print("Er zijn perioden waarin geen vloeibaar water kan bestaan.")
+    format_print(10, 50, [
+        "\n\n",
+        "** PLANEET-GEGEVENS **\n"
+    ])
+    format_print(10, 50, planet.climate())
 
     if mcnt > 0:
         _ = input("\nDruk op Enter voor informatie over het manenstelsel.")
@@ -329,7 +323,7 @@ def planet_data(star):
     if rp < rm or rp > rx:
         print("Vanwege de afstand tot de zon")
         live = False
-    if sh < 32 or ll > 175:
+    if planet.max_summer_temp < 0 or planet.min_winter_temp > 80:
         print("Aangezien er nooit vloeibaar water is")
         live = False
     if star.lifespan * star.life_fraction <= 1.5:
@@ -398,12 +392,16 @@ def planet_data(star):
                 print("Tenzij de atmosfeer veel licht")
                 print("tegenhoudt, zullen de dieren")
                 print("kleine ogen hebben.")
-            if hi - lo >= 50:
+            if planet.max_day_temp - planet.min_day_temp >= 30:
                 print("Vanwege de grote temeratuurvariaties")
                 print("zal het leven zich vooral ondergronds")
                 print("en onder water bevinden.")
-            if (tp - 460) < 32 or (
-                    tp - 460) > 86 or g > 1.5 or g < 0.68 or m < 0.4 or m > 2.35 or da > 96 or sh > 120 or ll < -30 or hi > 110 or lo < -10:
+            if ((tp - 460) < 32 or (tp - 460) > 86 or
+                    g > 1.5 or g < 0.68 or
+                    m < 0.4 or m > 2.35 or
+                    da > 96 or
+                    planet.max_summer_temp > 50 or planet.min_winter_temp < -35 or
+                    planet.max_day_temp > 45 or planet.min_day_temp < -25):
                 hm = 0
             else:
                 hm = 1
