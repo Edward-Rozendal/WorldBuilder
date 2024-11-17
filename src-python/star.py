@@ -42,7 +42,7 @@ class Star:
         line = f"Haar verwachte levensduur is {self.lifespan:.2f} miljard jaar"
         line += f" waarvan {self.life_fraction * 100:.0f}% of ongeveer {self.lifespan * self.life_fraction:.2f}"
         line += " miljard jaar zijn verstreken."
-        if self.life_fraction > 95:
+        if self.life_fraction > 0.95:
             line += f" {self.name} ligt op haar sterfbed."
         txt.append(line)
         line = f"Ze heeft een oppervlaktetemperatuur van {self.temperature():.0f} Kelvin."
