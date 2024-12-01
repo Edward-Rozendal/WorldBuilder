@@ -48,6 +48,14 @@ source: https://www.sciencing.com/calculate-perihelion-5344973/
 """
 
 
+class Moon:
+    def __init__(self, planet, mass, radius, period):
+        self.planet = planet
+        self.mass = mass  # Moon masses
+        self.radius = radius  # Moon = 30
+        self.period = period
+
+
 class Planet:
     def __init__(self, star):
         self.star = star
@@ -130,4 +138,11 @@ class Planet:
         if self.max_summer_temp <= 0 or self.min_winter_temp >= 80:
             line += " Er zijn perioden waarin geen vloeibaar water kan bestaan."
         txt.append(line)
+        return txt
+
+    def moon_info(self, day_length):
+        self.moons.sort(key=lambda x: x.radius)
+        txt = ["baanstraal  massa   periode"]
+        for moon in self.moons:
+            txt.append(f"{moon.radius:7.1f} {moon.mass:8.2f} {moon.period/day_length:9.2f} dagen")
         return txt

@@ -12,7 +12,7 @@ import os
 from spectral_type import SpectralType, InvalidSpectralType
 from star import Star
 from star_db import star_list, get_star
-from planet import Planet
+from planet import Planet, Moon
 
 
 def clear_screen():
@@ -209,27 +209,25 @@ def planet_data(star):
     mm = 1000
     h = 0
     r = 56 * g
-    mn = []
-    mr = []
-    mp = []
     if mcnt > 0:
         for i in range(mcnt):
-            mn.append(float(input(f"Massa maan nr.{i + 1} (onze maan = 1)? ")))
+            moon_mass = float(input(f"Massa maan nr.{i + 1} (onze maan = 1)? "))
             while True:
-                tmp = float(input("Baanstraal (onze maan = 30)? "))
-                if tmp < 3 * g:
+                moon_radius = float(input("Baanstraal (onze maan = 30)? "))
+                if moon_radius < 3 * g:
                     print("Te dichtbij; ze zal in stukken breken.")
                     continue
-                if tmp > 56 * g:
+                if moon_radius > 56 * g:
                     print("Te ver weg; ze ontsnapt.")
                     continue
                 break
-            mr.append(tmp)
-            mp.append(math.sqrt(tmp ** 3 / m) * 4)
-            if mr[i] < r:
-                mm = mp[i]
-                r = mr[i]
-            h = mn[i] * 0.01235 / (mr[i] ** 3) + h
+            moon_period = math.sqrt(moon_radius ** 3 / m) * 4
+            moon = Moon(planet, moon_mass, moon_radius, moon_period)
+            planet.add_moon(moon)
+            if moon_radius < r:
+                mm = moon_period
+                r = moon_radius
+            h = moon_mass * 0.01235 / (moon_radius ** 3) + h
     h2 = 0.85 * d ** 4 / m * (star.mass * 333500 / (11759 * planet.radius) ** 3 + h)
     da = 1759260 * h2 * 14 + 10
     if da > mm:
@@ -245,22 +243,12 @@ def planet_data(star):
 
     if mcnt > 0:
         _ = input("\nDruk op Enter voor informatie over het manenstelsel.")
-        if mcnt > 1:
-            for i in range(mcnt):
-                f = 0
-                for k in range(mcnt - 1):
-                    if mr[k + 1] < mr[k]:
-                        mr[k], mr[k + 1] = mr[k + 1], mr[k]
-                        mn[k], mn[k + 1] = mn[k + 1], mn[k]
-                        mp[k], mp[k + 1] = mp[k + 1], mp[k]
-                        f = 1
-                if f == 0:
-                    break
         clear_screen()
-        print("\n\n** HET MANENSTELSEL **")
-        print("\nbaanstraal  massa   periode\n")
-        for i in range(mcnt):
-            print(f"{mr[i]:7.1f} {mn[i]:8.2f} {mp[i] / da:9.2f} dagen")
+        format_print(10, 50, [
+            "\n",
+            "** HET MANENSTELSEL **\n"
+        ])
+        format_print(10, 50, planet.moon_info(planet.day_length))
 
     _ = input("\nDruk op Enter")
 
