@@ -4,6 +4,7 @@
 A database of stars.
 
 https://science.nasa.gov/sun/facts/
+  “sol" is the Latin word for Sun.
 https://www.star-facts.com/list-of-stars/
   https://www.star-facts.com/alpha-centauri/
   https://www.star-facts.com/epsilon-eridani-ran/

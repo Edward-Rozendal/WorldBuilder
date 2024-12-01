@@ -166,7 +166,6 @@ def planet_data(star):
     print("temperatuur van 16 graden Celsius.")
     tp = int(input("Welke temperatuur wenst u? "))
     planet.set_temperature(tp)
-    tp = 1.8 * tp + 492
     g = -1.0
     while g <= 0:
         print("\nGewenste zwaartekracht aan de oppervlakte")
@@ -174,18 +173,16 @@ def planet_data(star):
         if g <= 0:
             print("Enige zwaartekracht is noodzakelijk.")
     planet.set_gravity(g)
-    rp = math.sqrt(star.luminosity / (tp / 520) ** 4)
-    if rp <= star.mass / 5:
+    if planet.radius <= star.mass / 5:
         print("\nDeze planeet bevindt zich te dicht bij haar zon")
         print("om stabiel te zijn.")
         _ = input("Druk op Enter")
         return False
-    planet.set_radius(rp)
-    pp = math.sqrt(rp ** 3 / star.mass)
+    pp = math.sqrt(planet.radius ** 3 / star.mass)
     rm = math.sqrt(1 / 1.929)
     rx = math.sqrt(1 / 0.694)
     ds = star.mass ** 0.3333
-    sa = ds / rp
+    sa = ds / planet.radius
     print("\nHoe groot moet de planeet zijn in verhouding")
     d = float(input("tot de aarde? "))
     m = g * d ** 2
@@ -199,8 +196,6 @@ def planet_data(star):
         print("\nDe baan van de aarde heeft een excentriciteit")
         ec = float(input("van 0.01672 Gewenste excentriciteit (<1)? "))
     planet.set_eccentricity(ec)
-    ca = (1 - ec) * rp
-    fa = (1 + ec) * rp
     t1 = 100
     while t1 < 0 or t1 > 90:
         print("\nWat is de hoek van de rotatie-as (aarde =23.5 graden)?")
@@ -235,7 +230,7 @@ def planet_data(star):
                 mm = mp[i]
                 r = mr[i]
             h = mn[i] * 0.01235 / (mr[i] ** 3) + h
-    h2 = 0.85 * d ** 4 / m * (star.mass * 333500 / (11759 * rp) ** 3 + h)
+    h2 = 0.85 * d ** 4 / m * (star.mass * 333500 / (11759 * planet.radius) ** 3 + h)
     da = 1759260 * h2 * 14 + 10
     if da > mm:
         da = mm
@@ -272,12 +267,12 @@ def planet_data(star):
     clear_screen()
     print("\n\n** PLANEET-GEGEVENS **\n")
     print("Deze planeet heeft een gemiddelde")
-    print(f"oppervlakte temperatuur van {cnv(tp - 460):.0f}")
+    print(f"oppervlakte temperatuur van {planet.temperature:.0f}")
     print("graden C. Dit betekent een baanstraal")
-    print(f"van {rp:.2f} astronomische eenheden")
-    print(f"({rp * 150:.1f} miljoen km.).")
-    print(f"Perihelium = {ca:.2f} ae")
-    print(f"Aphelium = {fa:.2f} ae")
+    print(f"van {planet.radius:.2f} astronomische eenheden")
+    print(f"({planet.radius * 150:.1f} miljoen km.).")
+    print(f"Perihelium = {planet.perihelium:.2f} ae")
+    print(f"Aphelium = {planet.aphelium:.2f} ae")
     print(f"Een jaar is {pp:.2f} aardjaren lang.")
     print(f"{star.name} lijkt ", end='')
     if sa > 1.5 or sa < 0.75:
@@ -320,7 +315,7 @@ def planet_data(star):
     if m < 0.055 or m > 17.6:
         print("Vanwege de slechte atmosfeer")
         live = False
-    if rp < rm or rp > rx:
+    if planet.radius < rm or planet.radius > rx:
         print("Vanwege de afstand tot de zon")
         live = False
     if planet.max_summer_temp < 0 or planet.min_winter_temp > 80:
@@ -378,11 +373,8 @@ def planet_data(star):
                 print("geluidsoverdracht, zodat de dieren")
                 print("grote of helemaal geen oren zullen")
                 print("hebben. Hun longen moeten groter zijn.")
-                if tp >= 75:
-                    print("Het leven moet zich op een of andere.")
-                print("manier beschermen tegen het zonlicht.")
-                if sa <= 0.75:
-                    print("Het leven moet zich op een of andere.")
+                if planet.temperature >= -230:
+                    print("Het leven moet zich op een of andere")
                     print("manier beschermen tegen het zonlicht.")
             if sa < 0.75:
                 print("Vanwege de kleine zon zullen de")
@@ -396,7 +388,7 @@ def planet_data(star):
                 print("Vanwege de grote temeratuurvariaties")
                 print("zal het leven zich vooral ondergronds")
                 print("en onder water bevinden.")
-            if ((tp - 460) < 32 or (tp - 460) > 86 or
+            if (planet.temperature < 0 or planet.temperature > 30 or
                     g > 1.5 or g < 0.68 or
                     m < 0.4 or m > 2.35 or
                     da > 96 or
@@ -425,8 +417,8 @@ def planet_data(star):
         np = 15
     if np <= 1:
         return True
-    am = 1180 / math.sqrt(star.mass) - m * math.sqrt(rp)
-    rpl = [rp]
+    am = 1180 / math.sqrt(star.mass) - m * math.sqrt(planet.radius)
+    rpl = [planet.radius]
     mp = [m]
     for i in range(1, np):
         clear_screen()
