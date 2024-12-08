@@ -185,6 +185,42 @@ class Planet:
             txt.append(f"{moon.radius:7.1f} {moon.mass:8.2f} {moon.period / day_length:9.2f} dagen")
         return txt
 
+    def description(self):
+        txt = []
+        line = f"Deze planeet heeft een gemiddelde oppervlakte temperatuur van {self.temperature:.0f} "
+        line += f"graden C. Dit betekent een baanstraal van {self.radius:.2f} astronomische eenheden "
+        line += f"({self.radius * 150:.1f} miljoen km.)."
+        txt.append(line)
+        txt.append(f"Perihelium = {self.perihelium:.2f} ae, Aphelium = {self.aphelium:.2f} ae.")
+        txt.append(f"Een jaar is {self.year_length:.2f} aardjaren lang.")
+        line = f"{self.star.name} lijkt "
+        if self.star_size > 1.5 or self.star_size < 0.75:
+            line += "veel "
+        if self.star_size > 1:
+            line += "groter "
+        else:
+            line += "kleiner "
+        line += "dan onze zon."
+        txt.append(line)
+        if 0.95 < self.gravity < 1.05:
+            txt.append("De zwaartekracht is vrijwel gelijk aan die van de aarde.")
+        else:
+            line = "Aangezien de zwaartekracht "
+            if self.gravity > 1:
+                line += "groter is dan op aarde verwachten we een dichtere atmosfeer. De tektonische "
+                line += "werking is groter, maar er is ook meer weerstand. We verwachten daarom "
+                line += "meer continenten en kleinere bergen; Aardbevingen komen vaker voor en zijn heviger."
+            else:
+                line += "kleiner is dan op aarde verwachten we een dunnere atmosfeer. Er is minder "
+                line += "tektonische werking en ook de weerstand is kleiner. We verwachten "
+                line += "daarom minder bergen, maar ze kunnen veel hoger worden. "
+                line += "Aardbevingen, als ze al voorkomen, zullen minder hevig zijn."
+            txt.append(line)
+            line = f"Een zwaartekracht van {self.gravity:.2f} g betekent dat iemand van 80 kilo op deze "
+            line += f"planeet {80 * self.gravity:.1f} kilo zou wegen."
+            txt.append(line)
+        return txt
+
 
 def check_radius_calculation():
     print('   ', end='')

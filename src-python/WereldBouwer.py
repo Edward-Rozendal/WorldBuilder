@@ -178,14 +178,11 @@ def planet_data(star):
         print("om stabiel te zijn.")
         _ = input("Druk op Enter")
         return False
-    pp = math.sqrt(planet.radius ** 3 / star.mass)
     rm = math.sqrt(1 / 1.929)
     rx = math.sqrt(1 / 0.694)
-    ds = star.mass ** 0.3333
-    sa = ds / planet.radius
     print("\nHoe groot moet de planeet zijn in verhouding")
     d = float(input("tot de aarde? "))
-    m = g * d ** 2
+    m = planet.gravity * d ** 2
     planet.set_mass(m)
     if m < 0.055:
         print("Deze planeet zal geen zuurstofatmosfeer vasthouden.")
@@ -208,16 +205,16 @@ def planet_data(star):
         mcnt = 10
     mm = 1000
     h = 0
-    r = 56 * g
+    r = 56 * planet.gravity
     if mcnt > 0:
         for i in range(mcnt):
             moon_mass = float(input(f"Massa maan nr.{i + 1} (onze maan = 1)? "))
             while True:
                 moon_radius = float(input("Baanstraal (onze maan = 30)? "))
-                if moon_radius < 3 * g:
+                if moon_radius < 3 * planet.gravity:
                     print("Te dichtbij; ze zal in stukken breken.")
                     continue
-                if moon_radius > 56 * g:
+                if moon_radius > 56 * planet.gravity:
                     print("Te ver weg; ze ontsnapt.")
                     continue
                 break
@@ -253,48 +250,11 @@ def planet_data(star):
     _ = input("\nDruk op Enter")
 
     clear_screen()
-    print("\n\n** PLANEET-GEGEVENS **\n")
-    print("Deze planeet heeft een gemiddelde")
-    print(f"oppervlakte temperatuur van {planet.temperature:.0f}")
-    print("graden C. Dit betekent een baanstraal")
-    print(f"van {planet.radius:.2f} astronomische eenheden")
-    print(f"({planet.radius * 150:.1f} miljoen km.).")
-    print(f"Perihelium = {planet.perihelium:.2f} ae")
-    print(f"Aphelium = {planet.aphelium:.2f} ae")
-    print(f"Een jaar is {pp:.2f} aardjaren lang.")
-    print(f"{star.name} lijkt ", end='')
-    if sa > 1.5 or sa < 0.75:
-        print("veel ", end='')
-    if sa > 1:
-        print("groter ", end='')
-    else:
-        print("kleiner ", end='')
-    print("dan onze zon.")
-    if 0.95 < g < 1.05:
-        print("De zwaartekracht is vrijwel gelijk")
-        print("aan die van de aarde.")
-    else:
-        print("Aangezien de zwaartekracht")
-        if g > 1:
-            print("groter is dan op aarde verwachten we")
-            print("een dichtere atmosfeer. De tektonische")
-            print("werking is groter, maar er is ook")
-            print("meer weerstand. We verwachten daarom")
-            print("meer continenten en kleinere bergen;")
-            print("Aardbevingen komen vaker voor en zijn")
-            print("heviger.")
-        else:
-            print("kleiner is dan op aarde verwachten we")
-            print("een dunnere atmosfeer. Er is minder")
-            print("tektonische werking en ook de")
-            print("weerstand is kleiner. We verwachten")
-            print("daarom minder bergen, maar ze kunnen")
-            print("veel hoger worden.")
-            print("Aardbevingen, als ze al voorkomen,")
-            print("zullen minder hevig zijn.")
-        print("Een zwaartekracht van {:.2f} g betekent".format(g))
-        print("dat iemand van 80 kilo op deze")
-        print("planeet {:.1f} kilo zou wegen.".format(g * 80))
+    format_print(10, 50, [
+        "\n\n",
+        "** PLANEET-GEGEVENS **\n"
+    ])
+    format_print(10, 50, planet.description())
 
     _ = input("\nDruk op Enter voor informatie over leven")
     clear_screen()
@@ -319,23 +279,23 @@ def planet_data(star):
         live = False
     if live:
         print("Mogelijk zijn er ", end='')
-        if star.lifespan * star.life_fraction < 2 * g:
+        if star.lifespan * star.life_fraction < 2 * planet.gravity:
             print("bacterien en")
             print("blauwgroene algen.")
-        elif star.lifespan * star.life_fraction < 3 * g:
+        elif star.lifespan * star.life_fraction < 3 * planet.gravity:
             print("eencelligen met")
             print("een kern.")
-        elif star.lifespan * star.life_fraction < 4 * g:
+        elif star.lifespan * star.life_fraction < 4 * planet.gravity:
             print("eenvoudige")
             print("meercelligen.")
-        elif star.lifespan * star.life_fraction <= 4.4 * g:
+        elif star.lifespan * star.life_fraction <= 4.4 * planet.gravity:
             print("gewervelde")
             print("waterdieren en planten op het land.")
         else:
             print("grote op het land")
             print("levende dieren en misschien")
             print("intelligente wezens.")
-            if g >= 1.05:
+            if planet.gravity >= 1.05:
                 print("Grotere zwaartekracht betekent een")
                 print("dichtere atmosfeer die grote vogels")
                 print("kan dragen. Maar zelfs een kleine val")
@@ -343,13 +303,13 @@ def planet_data(star):
                 print("heden noodzakelijk zijn. In het")
                 print("algemeen zullen levensvormen korter")
                 print("en steviger zijn dan op aarde.")
-                if g > 1.2:
+                if planet.gravity > 1.2:
                     print("Er zijn geen tweebenige wezens")
                     print("zoals wij.")
                 print("De dikke atmosfeer verbetert de")
                 print("geluidsoverdracht; daarom zullen")
                 print("dieren meer op hun gehoor vertrouwen")
-            if g < 0.95:
+            if planet.gravity < 0.95:
                 print("Kleiner zwaartekracht betekent een")
                 print("dunnere atmosfeer. Vogels, als ze")
                 print("al voorkomen, hebben grote vleugels.")
@@ -364,11 +324,11 @@ def planet_data(star):
                 if planet.temperature >= -230:
                     print("Het leven moet zich op een of andere")
                     print("manier beschermen tegen het zonlicht.")
-            if sa < 0.75:
+            if planet.star_size < 0.75:
                 print("Vanwege de kleine zon zullen de")
                 print("dieren grote ogen hebben of op")
                 print("andere zintuigen vertrouwen")
-            if sa >= 1.5:
+            if planet.star_size >= 1.5:
                 print("Tenzij de atmosfeer veel licht")
                 print("tegenhoudt, zullen de dieren")
                 print("kleine ogen hebben.")
@@ -377,7 +337,7 @@ def planet_data(star):
                 print("zal het leven zich vooral ondergronds")
                 print("en onder water bevinden.")
             if (planet.temperature < 0 or planet.temperature > 30 or
-                    g > 1.5 or g < 0.68 or
+                    planet.gravity > 1.5 or planet.gravity < 0.68 or
                     m < 0.4 or m > 2.35 or
                     da > 96 or
                     planet.max_summer_temp > 50 or planet.min_winter_temp < -35 or
