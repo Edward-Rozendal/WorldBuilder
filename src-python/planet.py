@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import math
+
 """
 ## Star appearance
 The appearance of a star, how big it looks, depends on both its diameter and distance.
@@ -45,6 +46,44 @@ relatively consistent throughout the year and means that Earth's eccentricity do
 an extremely noticeable impact on our day-to-day lives. (The tilt of the earth on its axis
 has a much more noticeable effect on our lives by causing the existence of seasons.)
 source: https://www.sciencing.com/calculate-perihelion-5344973/
+
+## Temperature
+The program originally uses temperatures in Fahrenheit and Rankine
+Conversions to Celsius and Kelvin:
+- Tk = (Tf + 459 ) * (5/9)
+- Tc = (Tf - 32) * (5/9)
+- Tf = Tc * (5/9) + 32
+- Tk = Tr * (5/9)
+- Tc = Tr * (5/9) - 273
+- Tr = Tk * (9/5)
+- Tr = (Tc + 273) * (9/5) = 1.8 * Tc + 492
+
+## Radius
+The temperature of the planet will be about:
+    T = 273 * ( (1-A)*L / D^2 )^0.25
+A is the reflectivity (albedo) of the planet,
+L is the luminosity of its star in multiples of the sun's power
+D is the distance between the planet and the star in Astronomical Units (AU),
+The resulting temperature will be in units of Kelvins.
+Albedo (A) depends on the surface material:
+    Material    Example     Albedo (A)
+    Basalt      Moon        0.06
+    Iron Oxide  Mars        0.16
+    Water+Land  Earth       0.40
+    Gas         Jupiter     0.70 
+source: https://spacemath.gsfc.nasa.gov/weekly/6Page61.pdf
+
+When calculating the temperature for Earth (A=0.40, L=1, D=1), the result is
+240K (-32 Celsius). That is because no greenhouse effect is taken into account.
+For a calculation with greenhouse effect, see:
+https://astro.sitehost.iu.edu/ala/PlanetTemp/index.html
+
+The program uses the formula to calculate the distance for a given temperature:
+    D = sqrt( (273^4 * (1-A)*L) / T^4 )
+    D = sqrt( (1-A)*L) / (T/273)^4 )
+But instead of Water+Land albedo of 0.40, it uses -0.25, probably for some
+compensation for a greenhouse effect. Calculating Earths temperature with this
+values gives a more realistic temperature of 288K (16 Celsius).
 """
 
 
@@ -84,11 +123,10 @@ class Planet:
         self.gravity = gravity
 
     def set_temperature(self, temperature):
-        tp = 1.8 * temperature + 492  # Convert to Rankine
-        radius = math.sqrt(self.star.luminosity / (tp / 520) ** 4)
+        radius = math.sqrt(((1 + 0.25) * self.star.luminosity) / ((temperature + 273) / 273) ** 4)
         self.radius = radius
-        self.star_size = self.star.mass**0.3333 / radius
-        self.year_length = math.sqrt(radius**3 / self.star.mass)
+        self.star_size = self.star.mass ** 0.3333 / radius
+        self.year_length = math.sqrt(radius ** 3 / self.star.mass)
         self.temperature = temperature
         self.__calc_temp()
 
@@ -119,8 +157,8 @@ class Planet:
         self.__calc_year_temp()
 
     def __calc_year_temp(self):
-        self.max_summer_temp = self.max_day_temp + 1.0556 * self.angle * (1 + self.eccentricity)**2
-        self.min_winter_temp = self.min_day_temp - 1.0556 * self.angle / (1 + self.eccentricity)**2
+        self.max_summer_temp = self.max_day_temp + 1.0556 * self.angle * (1 + self.eccentricity) ** 2
+        self.min_winter_temp = self.min_day_temp - 1.0556 * self.angle / (1 + self.eccentricity) ** 2
         if self.min_winter_temp < -273:
             self.min_winter_temp = -273
 
@@ -144,5 +182,38 @@ class Planet:
         self.moons.sort(key=lambda x: x.radius)
         txt = ["baanstraal  massa   periode"]
         for moon in self.moons:
-            txt.append(f"{moon.radius:7.1f} {moon.mass:8.2f} {moon.period/day_length:9.2f} dagen")
+            txt.append(f"{moon.radius:7.1f} {moon.mass:8.2f} {moon.period / day_length:9.2f} dagen")
         return txt
+
+
+def check_radius_calculation():
+    print('   ', end='')
+    for lum in range(3, 15, 2):
+        luminosity = lum / 10
+        print(f'     {luminosity:3.1f}', end='')
+    print('')
+    for temperature in range(6, 20, 2):
+        print(f'{temperature:3}', end='')
+        for lum in range(3, 15, 2):
+            # Original radius calculation
+            luminosity = lum / 10
+            tp = 1.8 * temperature + 492  # Convert to Rankine
+            radius = math.sqrt(luminosity / (tp / 520) ** 4)
+            print(f'  {radius:6.2f}', end='')
+        print('\n   ', end='')
+        for lum in range(3, 15, 2):
+            # Rewritten radius calculation with same outcome
+            luminosity = lum / 10
+            radius = math.sqrt(((1 + 0.25) * luminosity) / ((temperature + 273) / 273) ** 4)
+            print(f'  {radius:6.2f}', end='')
+        print('\n   ', end='')
+        for lum in range(3, 15, 2):
+            # Radius calculation using formula with Water+Land albedo
+            luminosity = lum / 10
+            radius = math.sqrt(((1 - 0.40) * luminosity) / ((temperature + 273) / 273) ** 4)
+            print(f'  {radius:6.2f}', end='')
+        print('')
+
+
+if __name__ == '__main__':
+    check_radius_calculation()
