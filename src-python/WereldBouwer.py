@@ -178,15 +178,12 @@ def planet_data(star):
         print("om stabiel te zijn.")
         _ = input("Druk op Enter")
         return False
-    rm = math.sqrt(1 / 1.929)
-    rx = math.sqrt(1 / 0.694)
     print("\nHoe groot moet de planeet zijn in verhouding")
     d = float(input("tot de aarde? "))
-    m = planet.gravity * d ** 2
-    planet.set_mass(m)
-    if m < 0.055:
+    planet.set_mass(planet.gravity * d ** 2)
+    if planet.mass < 0.055:
         print("Deze planeet zal geen zuurstofatmosfeer vasthouden.")
-    if m > 17.6:
+    if planet.mass > 17.6:
         print("Deze planeet zal haar waterstofatmosfeer niet kwijtraken.")
     ec = 2
     while ec > 1:
@@ -218,14 +215,14 @@ def planet_data(star):
                     print("Te ver weg; ze ontsnapt.")
                     continue
                 break
-            moon_period = math.sqrt(moon_radius ** 3 / m) * 4
+            moon_period = math.sqrt(moon_radius ** 3 / planet.mass) * 4
             moon = Moon(planet, moon_mass, moon_radius, moon_period)
             planet.add_moon(moon)
             if moon_radius < r:
                 mm = moon_period
                 r = moon_radius
             h = moon_mass * 0.01235 / (moon_radius ** 3) + h
-    h2 = 0.85 * d ** 4 / m * (star.mass * 333500 / (11759 * planet.radius) ** 3 + h)
+    h2 = 0.85 * d ** 4 / planet.mass * (star.mass * 333500 / (11759 * planet.radius) ** 3 + h)
     da = 1759260 * h2 * 14 + 10
     if da > mm:
         da = mm
@@ -258,101 +255,11 @@ def planet_data(star):
 
     _ = input("\nDruk op Enter voor informatie over leven")
     clear_screen()
-    print("\n** LEVEN? **\n")
-    live = True
-    if m < 0.055 or m > 17.6:
-        print("Vanwege de slechte atmosfeer")
-        live = False
-    if planet.radius < rm or planet.radius > rx:
-        print("Vanwege de afstand tot de zon")
-        live = False
-    if planet.max_summer_temp < 0 or planet.min_winter_temp > 80:
-        print("Aangezien er nooit vloeibaar water is")
-        live = False
-    if star.lifespan * star.life_fraction <= 1.5:
-        print("De planeet is te jong; er kan nog")
-        print("geen leven zijn ontstaan.")
-        live = False
-    if star.life_fraction >= 0.95:
-        print(f"Aangezien {star.name} op haar")
-        print("sterbed ligt")
-        live = False
-    if live:
-        print("Mogelijk zijn er ", end='')
-        if star.lifespan * star.life_fraction < 2 * planet.gravity:
-            print("bacterien en")
-            print("blauwgroene algen.")
-        elif star.lifespan * star.life_fraction < 3 * planet.gravity:
-            print("eencelligen met")
-            print("een kern.")
-        elif star.lifespan * star.life_fraction < 4 * planet.gravity:
-            print("eenvoudige")
-            print("meercelligen.")
-        elif star.lifespan * star.life_fraction <= 4.4 * planet.gravity:
-            print("gewervelde")
-            print("waterdieren en planten op het land.")
-        else:
-            print("grote op het land")
-            print("levende dieren en misschien")
-            print("intelligente wezens.")
-            if planet.gravity >= 1.05:
-                print("Grotere zwaartekracht betekent een")
-                print("dichtere atmosfeer die grote vogels")
-                print("kan dragen. Maar zelfs een kleine val")
-                print("is dodelijk, zodat hoge reactiesnel-")
-                print("heden noodzakelijk zijn. In het")
-                print("algemeen zullen levensvormen korter")
-                print("en steviger zijn dan op aarde.")
-                if planet.gravity > 1.2:
-                    print("Er zijn geen tweebenige wezens")
-                    print("zoals wij.")
-                print("De dikke atmosfeer verbetert de")
-                print("geluidsoverdracht; daarom zullen")
-                print("dieren meer op hun gehoor vertrouwen")
-            if planet.gravity < 0.95:
-                print("Kleiner zwaartekracht betekent een")
-                print("dunnere atmosfeer. Vogels, als ze")
-                print("al voorkomen, hebben grote vleugels.")
-                print("Alle levensvormen zullen hoger en")
-                print("slanker gebouwd zijn dan die op aarde.")
-                print("Tweebenige wezens kunnen zeker")
-                print("voorkomen.")
-                print("De dunne atmosfeer bemoeilijkt")
-                print("geluidsoverdracht, zodat de dieren")
-                print("grote of helemaal geen oren zullen")
-                print("hebben. Hun longen moeten groter zijn.")
-                if planet.temperature >= -230:
-                    print("Het leven moet zich op een of andere")
-                    print("manier beschermen tegen het zonlicht.")
-            if planet.star_size < 0.75:
-                print("Vanwege de kleine zon zullen de")
-                print("dieren grote ogen hebben of op")
-                print("andere zintuigen vertrouwen")
-            if planet.star_size >= 1.5:
-                print("Tenzij de atmosfeer veel licht")
-                print("tegenhoudt, zullen de dieren")
-                print("kleine ogen hebben.")
-            if planet.max_day_temp - planet.min_day_temp >= 30:
-                print("Vanwege de grote temeratuurvariaties")
-                print("zal het leven zich vooral ondergronds")
-                print("en onder water bevinden.")
-            if (planet.temperature < 0 or planet.temperature > 30 or
-                    planet.gravity > 1.5 or planet.gravity < 0.68 or
-                    m < 0.4 or m > 2.35 or
-                    da > 96 or
-                    planet.max_summer_temp > 50 or planet.min_winter_temp < -35 or
-                    planet.max_day_temp > 45 or planet.min_day_temp < -25):
-                hm = 0
-            else:
-                hm = 1
-    else:
-        print("zal op deze planeet waarschijnlijk.")
-        print("geen leven zijn.")
-    print("Mensen zullen deze wereld")
-    print("waarschijnlijk ", end='')
-    if hm == 0:
-        print("on", end='')
-    print("bewoonbaar vinden.")
+    format_print(10, 50, [
+        "\n",
+        "** LEVEN? **\n"
+    ])
+    format_print(10, 50, planet.life())
     _ = input("\nDruk op Enter")
 
     clear_screen()
@@ -365,9 +272,9 @@ def planet_data(star):
         np = 15
     if np <= 1:
         return True
-    am = 1180 / math.sqrt(star.mass) - m * math.sqrt(planet.radius)
+    am = 1180 / math.sqrt(star.mass) - planet.mass * math.sqrt(planet.radius)
     rpl = [planet.radius]
-    mp = [m]
+    mp = [planet.mass]
     for i in range(1, np):
         clear_screen()
         while True:

@@ -221,6 +221,93 @@ class Planet:
             txt.append(line)
         return txt
 
+    def life(self):
+        rm = math.sqrt(1 / 1.929)
+        rx = math.sqrt(1 / 0.694)
+        txt = []
+        live = True
+        hm = 0
+        line = ""
+        if self.mass < 0.055 or self.mass > 17.6:
+            line += "Vanwege de slechte atmosfeer "
+            live = False
+        elif self.radius < rm or self.radius > rx:
+            line += "Vanwege de afstand tot de zon "
+            live = False
+        elif self.max_summer_temp < 0 or self.min_winter_temp > 80:
+            line += "Aangezien er nooit vloeibaar water is "
+            live = False
+        elif self.star.lifespan * self.star.life_fraction <= 1.5:
+            line += "Aangezien de planeet te jong is "
+            live = False
+        elif self.star.life_fraction >= 0.95:
+            line += f"Aangezien {self.star.name} op haar sterbed ligt "
+            live = False
+        if live:
+            line = "Mogelijk zijn er "
+            if self.star.lifespan * self.star.life_fraction < 2 * self.gravity:
+                line += "bacterien en blauwgroene algen."
+            elif self.star.lifespan * self.star.life_fraction < 3 * self.gravity:
+                line += "eencelligen met een kern."
+            elif self.star.lifespan * self.star.life_fraction < 4 * self.gravity:
+                line += "eenvoudige meercelligen."
+            elif self.star.lifespan * self.star.life_fraction <= 4.4 * self.gravity:
+                line += "gewervelde waterdieren en planten op het land."
+            else:
+                line += "grote op het land levende dieren en misschien intelligente wezens."
+                txt.append(line)
+                if self.gravity >= 1.05:
+                    line = "Grotere zwaartekracht betekent een dichtere atmosfeer die grote vogels "
+                    line += "kan dragen. Maar zelfs een kleine val is dodelijk, zodat hoge reactiesnelheden "
+                    line += "noodzakelijk zijn. In het algemeen zullen levensvormen korter "
+                    line += "en steviger zijn dan op aarde."
+                    if self.gravity > 1.2:
+                        line += " Er zijn geen tweebenige wezens zoals wij."
+                    txt.append(line)
+                    line = "De dikke atmosfeer verbetert de geluidsoverdracht; daarom zullen "
+                    line += "dieren meer op hun gehoor vertrouwen"
+                if self.gravity < 0.95:
+                    line = "Kleiner zwaartekracht betekent een dunnere atmosfeer. Vogels, als ze "
+                    line += "al voorkomen, hebben grote vleugels. Alle levensvormen zullen hoger en "
+                    line += "slanker gebouwd zijn dan die op aarde. Tweebenige wezens kunnen zeker voorkomen."
+                    txt.append(line)
+                    line = "De dunne atmosfeer bemoeilijkt geluidsoverdracht, zodat de dieren "
+                    line += "grote of helemaal geen oren zullen hebben. Hun longen moeten groter zijn."
+                    if self.temperature >= -230:
+                        txt.append(line)
+                        line = "Het leven moet zich op een of andere manier beschermen tegen het zonlicht."
+                txt.append(line)
+                if self.star_size < 0.75:
+                    line = "Vanwege de kleine zon zullen de dieren grote ogen hebben of op "
+                    line += "andere zintuigen vertrouwen."
+                    txt.append(line)
+                if self.star_size >= 1.5:
+                    line = "Tenzij de atmosfeer veel licht tegenhoudt, zullen de dieren "
+                    line += "kleine ogen hebben."
+                    txt.append(line)
+                if self.max_day_temp - self.min_day_temp >= 30:
+                    line = "Vanwege de grote temeratuurvariaties zal het leven zich vooral ondergronds"
+                    line += "en onder water bevinden."
+                    txt.append(line)
+                if (self.temperature < 0 or self.temperature > 30 or
+                        self.gravity > 1.5 or self.gravity < 0.68 or
+                        self.mass < 0.4 or self.mass > 2.35 or
+                        self.day_length > 96 or
+                        self.max_summer_temp > 50 or self.min_winter_temp < -35 or
+                        self.max_day_temp > 45 or self.min_day_temp < -25):
+                    hm = 0
+                else:
+                    hm = 1
+        else:
+            line += "zal op deze planeet waarschijnlijk geen leven zijn."
+        txt.append(line)
+        line = "Mensen zullen deze wereld waarschijnlijk "
+        if hm == 0:
+            line += "on"
+        line += "geschikt vinden om te wonen."
+        txt.append(line)
+        return txt
+
 
 def check_radius_calculation():
     print('   ', end='')
