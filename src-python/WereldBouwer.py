@@ -7,6 +7,7 @@ The original was written in BASIC by Stephen Kimmel and published in the June 19
 This version is based on the Dutch translation made by Steven Bolt and Carl Koppeschaar
 and published in January 1984 in the monthly magazine [KIJK](https://www.kijkmagazine.nl/).
 """
+
 import math
 import os
 from spectral_type import SpectralType, InvalidSpectralType
@@ -60,11 +61,6 @@ def title_screen():
     _ = input()
 
 
-def cnv(z):
-    """ Convert degrees fahrenheit to degrees celsius"""
-    return ((z - 32) / 0.18 + 0.5) / 10
-
-
 def menu_screen():
     clear_screen()
     format_print(10, 50, [
@@ -111,8 +107,8 @@ def define_own_star():
         s1 = input("\nWat is de spectraalklasse? ")
         if len(s1) == 0 or s1[0] in ('/', '?'):
             m = float(input("\nAbsolute magnitude ( zon=4.85 )? "))
-            l = 2.512 ** (4.85 - m)
-            mass = l ** 0.285714
+            l = math.pow(2.512, (4.85 - m))
+            mass = math.pow(l, 0.285714)
             star.spectral_type = SpectralType.type_from_mass(mass)
             break
         elif len(s1) == 2:
@@ -126,7 +122,7 @@ def define_own_star():
         else:
             print("<letter><cijfer> verwacht")
             continue
-    as1 = mass ** -2.5 * 10
+    as1 = math.pow(mass, -2.5) * 10
     while True:
         print(f"\n{s} heeft een verwachte levensduur van ")
         print(f"{as1:.1f} miljard jaar ")
@@ -137,7 +133,7 @@ def define_own_star():
         if confirm("\nWilt u een ander percentage? "):
             break
     mass = mass * (1.25 - 0.005 * p)
-    l = mass ** 3.5
+    l = math.pow(mass, 3.5)
     star.mass = mass
     star.luminosity = l
     star.lifespan = as1
@@ -180,7 +176,7 @@ def planet_data(star):
         return False
     print("\nHoe groot moet de planeet zijn in verhouding")
     d = float(input("tot de aarde? "))
-    planet.set_mass(planet.gravity * d ** 2)
+    planet.set_mass(planet.gravity * math.pow(d, 2))
     if planet.mass < 0.055:
         print("Deze planeet zal geen zuurstofatmosfeer vasthouden.")
     if planet.mass > 17.6:
@@ -215,14 +211,14 @@ def planet_data(star):
                     print("Te ver weg; ze ontsnapt.")
                     continue
                 break
-            moon_period = math.sqrt(moon_radius ** 3 / planet.mass) * 4
+            moon_period = math.sqrt(math.pow(moon_radius, 3) / planet.mass) * 4
             moon = Moon(planet, moon_mass, moon_radius, moon_period)
             planet.add_moon(moon)
             if moon_radius < r:
                 mm = moon_period
                 r = moon_radius
-            h = moon_mass * 0.01235 / (moon_radius ** 3) + h
-    h2 = 0.85 * d ** 4 / planet.mass * (star.mass * 333500 / (11759 * planet.radius) ** 3 + h)
+            h = moon_mass * 0.01235 / math.pow(moon_radius, 3) + h
+    h2 = 0.85 * math.pow(d, 4) / planet.mass * (star.mass * 333500 / math.pow(11759 * planet.radius, 3) + h)
     da = 1759260 * h2 * 14 + 10
     if da > mm:
         da = mm
@@ -334,11 +330,11 @@ def planet_data(star):
         if not f:
             break
     print("\n\nPlaneet nr.   massa   baanstraal\n")
-    rm = math.sqrt(1 / 1.929)
-    rx = math.sqrt(1 / 0.694)
+    inner_habitable_zone = 0.00012 * star.temperature()
+    outer_habitable_zone = 0.06452 * math.exp(0.0005 * star.temperature())
     for i in range(0, np):
         print(f"  {i:2d}    {mp[i]:9.3f}   {rpl[i]:8.3f}  ", end='')
-        if rm < rpl[i] < rx and 0.055 < mp[i] < 17.6:
+        if inner_habitable_zone < rpl[i] < outer_habitable_zone and 0.055 < mp[i] < 17.6:
             print("Leven?")
         else:
             print("")

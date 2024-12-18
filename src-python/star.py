@@ -2,14 +2,13 @@
 # -*- coding: utf-8 -*-
 """
 ## temperature - mass relation
-Temp in Kelvin = 6000 * self.mass ** 0.35
-- Where is surface-temperature mass relation based on?
-- 6000 Kelvin is approximately the surface temperature of the sun:
-  - https://science.nasa.gov/sun/facts/
-  - Surface temperature: (Photosphere) 10,000 degrees Fahrenheit (5,500 degrees Celsius)
+Temp in Kelvin = 6000 * mass^0.35
+Where is surface-temperature mass relation based on?
+6000 Kelvin is approximately the surface temperature of the sun.
+
 
 ## planet probability for planets
-- Where is dependency on spectral type for planet probability base on?
+ Where is dependency on spectral type for planet probability base on?
 """
 
 from spectral_type import SpectralType

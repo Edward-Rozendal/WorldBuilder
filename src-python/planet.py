@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
-import math
-
 """
 ## Star appearance
 The appearance of a star, how big it looks, depends on both its diameter and distance.
 Assuming each star has the same mass density, the diameter relative to the Sun depends
 equally to their mass as their volume. The volume of a sphere is: 
     V = 4/3 * pi * r^3
-Given that the size in inversely proportional to its distance (the Planets radius),
+Given that the size in inversely proportional to its distance (the planets radius),
 the size relative to the Sun is:
     size = mass^0.3333 / distance
+
 
 ## Year length in Earth years
 The length of a year, the orbital period, can be calculated with Kepler’s Third Law:
@@ -27,10 +25,12 @@ period, in earth years, can be calculated with:
     year_length = sqrt(radius^3 / star.mass)
 source: https://people.astro.umass.edu/~weinberg/a114/handouts/concept1.pdf
 
+
 ## Year length in planet days.
 An Earth year is 365,25 day * 24 hours per day = 8766 hours long, so:
     year_days = year_length * 8766 / day_length
 With year_length in Earth days and day_length in hours.
+
 
 ## Perihelion and Aphelion
 Eccentricity is calculated using the following formula:
@@ -47,6 +47,7 @@ an extremely noticeable impact on our day-to-day lives. (The tilt of the earth o
 has a much more noticeable effect on our lives by causing the existence of seasons.)
 source: https://www.sciencing.com/calculate-perihelion-5344973/
 
+
 ## Temperature
 The program originally uses temperatures in Fahrenheit and Rankine
 Conversions to Celsius and Kelvin:
@@ -57,6 +58,7 @@ Conversions to Celsius and Kelvin:
 - Tc = Tr * (5/9) - 273
 - Tr = Tk * (9/5)
 - Tr = (Tc + 273) * (9/5) = 1.8 * Tc + 492
+
 
 ## Radius
 The temperature of the planet will be about:
@@ -84,7 +86,30 @@ The program uses the formula to calculate the distance for a given temperature:
 But instead of Water+Land albedo of 0.40, it uses -0.25, probably for some
 compensation for a greenhouse effect. Calculating Earths temperature with this
 values gives a more realistic temperature of 288K (16 Celsius).
+
+
+## Maximum and minimum day temperature
+The formula used to calculate the maximum and minimum temperature are:
+    max_day_temp = ((1 + 0.025 * day_length / 24) * (1.8 * temperature + 492) - 492) / 1.8
+    min_day_temp = ((1 - 0.025 * day_length / 24) * (1.8 * temperature + 492) - 492) / 1.8
+The calculation is in Rankine. The planet temperature and the resulting temperatures
+are in degrees Celsius and therefore converted to and from Rankine.
+It is unknown on what principles the formula is based on.
+
+
+## Planetary habitability
+The appropriate spectral range for habitable stars is considered to be "late F" or "G", to "mid-K".
+Source: https://en.wikipedia.org/wiki/Planetary_habitability
+
+The habitable zone (HZ) is the range of orbits around a star within which a planetary surface
+can support liquid water given sufficient atmospheric pressure.
+Published estimates for the habitable zone within the Solar System range from 0.38 to 10.0 astronomical units
+though arriving at these estimates has been challenging for a variety of reasons.
+Dole estimates the inner edge for the sun at 0.725 AU and the outer edge at 1.24 AU.
+Source: https://en.wikipedia.org/wiki/Habitable_zone
 """
+
+import math
 
 
 class Moon:
@@ -123,10 +148,10 @@ class Planet:
         self.gravity = gravity
 
     def set_temperature(self, temperature):
-        radius = math.sqrt(((1 + 0.25) * self.star.luminosity) / ((temperature + 273) / 273) ** 4)
+        radius = math.sqrt(((1 + 0.25) * self.star.luminosity) / math.pow((temperature + 273) / 273, 4))
         self.radius = radius
-        self.star_size = self.star.mass ** 0.3333 / radius
-        self.year_length = math.sqrt(radius ** 3 / self.star.mass)
+        self.star_size = math.pow(self.star.mass, 0.3333) / radius
+        self.year_length = math.sqrt(math.pow(radius, 3) / self.star.mass)
         self.temperature = temperature
         self.__calc_temp()
 
@@ -157,8 +182,8 @@ class Planet:
         self.__calc_year_temp()
 
     def __calc_year_temp(self):
-        self.max_summer_temp = self.max_day_temp + 1.0556 * self.angle * (1 + self.eccentricity) ** 2
-        self.min_winter_temp = self.min_day_temp - 1.0556 * self.angle / (1 + self.eccentricity) ** 2
+        self.max_summer_temp = self.max_day_temp + 1.0556 * self.angle * math.pow(1 + self.eccentricity, 2)
+        self.min_winter_temp = self.min_day_temp - 1.0556 * self.angle / math.pow(1 + self.eccentricity, 2)
         if self.min_winter_temp < -273:
             self.min_winter_temp = -273
 
@@ -222,16 +247,16 @@ class Planet:
         return txt
 
     def life(self):
-        rm = math.sqrt(1 / 1.929)
-        rx = math.sqrt(1 / 0.694)
         txt = []
+        inner_habitable_zone = 0.00012 * self.star.temperature()
+        outer_habitable_zone = 0.06452 * math.exp(0.0005 * self.star.temperature())
         live = True
         hm = 0
         line = ""
         if self.mass < 0.055 or self.mass > 17.6:
             line += "Vanwege de slechte atmosfeer "
             live = False
-        elif self.radius < rm or self.radius > rx:
+        elif self.radius < inner_habitable_zone or self.radius > outer_habitable_zone:
             line += "Vanwege de afstand tot de zon "
             live = False
         elif self.max_summer_temp < 0 or self.min_winter_temp > 80:
@@ -321,19 +346,19 @@ def check_radius_calculation():
             # Original radius calculation
             luminosity = lum / 10
             tp = 1.8 * temperature + 492  # Convert to Rankine
-            radius = math.sqrt(luminosity / (tp / 520) ** 4)
+            radius = math.sqrt(luminosity / math.pow(tp / 520, 4))
             print(f'  {radius:6.2f}', end='')
         print('\n   ', end='')
         for lum in range(3, 15, 2):
             # Rewritten radius calculation with same outcome
             luminosity = lum / 10
-            radius = math.sqrt(((1 + 0.25) * luminosity) / ((temperature + 273) / 273) ** 4)
+            radius = math.sqrt(((1 + 0.25) * luminosity) / math.pow((temperature + 273) / 273, 4))
             print(f'  {radius:6.2f}', end='')
         print('\n   ', end='')
         for lum in range(3, 15, 2):
             # Radius calculation using formula with Water+Land albedo
             luminosity = lum / 10
-            radius = math.sqrt(((1 - 0.40) * luminosity) / ((temperature + 273) / 273) ** 4)
+            radius = math.sqrt(((1 - 0.40) * luminosity) / math.pow((temperature + 273) / 273, 4))
             print(f'  {radius:6.2f}', end='')
         print('')
 

@@ -30,54 +30,46 @@ https://www.star-facts.com/list-of-stars/
 
 
 ## Mass-Luminosity Relationship
-http://hyperphysics.phy-astr.gsu.edu/hbase/Astro/herrus.html#c3
-https://en.wikipedia.org/wiki/Mass%E2%80%93luminosity_relation
-
 For main sequence stars, the luminosity increases with the mass with the approximate
 power law:
-
     L = L0 * (M/M0)^a
 
 Where L0 and M0 re the luminosity and mass of the Sun and 3 < a < 4.
 The value of 3.5 is most commonly used for main-sequence stars.
-
 So, the relation between the mass and luminosity of a star is:
-
     L = M^3.5
     M = L^(1/3.5) = L^0.285714
 
+Source: http://hyperphysics.phy-astr.gsu.edu/hbase/Astro/herrus.html#c3
+        https://en.wikipedia.org/wiki/Mass%E2%80%93luminosity_relation
+
 
 ## Lifespan
-https://astronomy.swin.edu.au/cosmos/m/main+sequence+lifetime
-http://hyperphysics.phy-astr.gsu.edu/hbase/Astro/startime.html
-https://www.atnf.csiro.au/outreach/education/senior/astrophysics/stellarevolution_mainsequence.html
-
 The overall lifespan of a star is determined by its mass. Since stars spend roughly
 90% of their lives burning hydrogen into helium on the main sequence (MS), their
 ‘main sequence lifetime’ is also determined by their mass.
-
 An expression for the main sequence lifetime can be obtained as a function of stellar
 mass and is usually written in relation to solar units:
-
-    t ~ t0 * (M0/M)^2.5
+    t ~ t0 * (M/M0)^-2.5
 
 Where t0 is the main sequence lifetime of the Sun and M0 it mass.
 The Sun, a G-type star with a main sequence lifetime of ~ 10 billion years.
 The lifetimes of main sequence stars therefore range from a million years for a 40
 solar mass O-type star, to 560 billion years for a 0.2 solar mass M-type star.
+Note: this expression is an approximation only, and not valid for very massive or very light stars.
+
+Source: https://astronomy.swin.edu.au/cosmos/m/main+sequence+lifetime
+        http://hyperphysics.phy-astr.gsu.edu/hbase/Astro/startime.html
 
 
 ## Age
-https://www.sciencenews.org/article/star-age-calculation-astronomy-life-cycle
 The sun is the only star we know the age of. Everything else is bootstrapped up from there.
+Source: https://www.sciencenews.org/article/star-age-calculation-astronomy-life-cycle
 
-https://www.scientificamerican.com/article/how-do-scientists-determi/
 A star like our sun is calculated to have a total stable life-span of around 10 billion years;
 the sun is now a bit less than half that age (this age is very accurately determined from
 radioactive elements in meteorites).
-
-How do you measure the age of a star?
-https://www.youtube.com/watch?v=w80z_moI8BU
+Source: https://www.scientificamerican.com/article/how-do-scientists-determi/
 
 What is the rationale behind the calculation of the passed lifespan fraction?
 The calculation based only on mass and luminosity is useless as for all stars
